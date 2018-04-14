@@ -1,7 +1,7 @@
 package util;
 
-import javagames.input.KeyInput;
-import javagames.input.RelativeMouseInput;
+import input.KeyInput;
+import input.RelativeMouseInput;
 
 import javax.swing.*;
 import java.awt.*;
@@ -168,6 +168,7 @@ public class SimpleFramework extends JFrame implements Runnable {
         try {
             Thread.sleep(sleep);
         } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
     }
 
