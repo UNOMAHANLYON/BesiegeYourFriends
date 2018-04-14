@@ -82,7 +82,7 @@ public class BoundingCircle implements BoundingShapes {
     }
 
     @Override
-    public void renderBounding( Graphics G ) {
+    public void render( Graphics G ) {
 
         G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );
 

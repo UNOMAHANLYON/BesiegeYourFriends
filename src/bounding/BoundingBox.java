@@ -88,7 +88,7 @@ public class BoundingBox implements BoundingShapes {
 
     }
 
-    public void renderBounding( Graphics G ) {
+    public void render( Graphics G ) {
 
         G.drawRect( (int)min.x, (int)min.y, (int)max.x, (int)max.y );
 

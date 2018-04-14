@@ -12,6 +12,6 @@ public interface BoundingShapes {
 
     public boolean pointInShape( Vector2f test );
 
-    public void renderBounding ( Graphics G );
+    public void render ( Graphics G );
 
 }
