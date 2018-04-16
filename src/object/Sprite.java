@@ -3,6 +3,7 @@ package object;
 import bounding.BoundingShapes;
 import util.Matrix3x3f;
 import util.Vector2f;
+import util.Utility;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,6 +17,9 @@ public class Sprite {
     private BoundingShapes outterBounds;
     private ArrayList<BoundingShapes> innerBounds;
     private BufferedImage spriteImage;
+    private BufferedImage scaledImage;
+    private Vector2f topLeft;
+    private Vector2f bottomRight;
     private String path;
 
     private Matrix3x3f world;
@@ -24,9 +28,11 @@ public class Sprite {
     private Vector2f scale;
     private boolean showBounds;
 
-    public Sprite( String path ){
+    public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
 
         this.path = path;
+        this.topLeft = topLeft;
+        this.bottomRight = bottomRight;
         try {
 
             //spriteImage = ImageIO.read(getClass().getResource(path));
@@ -53,8 +59,9 @@ public class Sprite {
 
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
+            scaleImage(world);
             Graphics2D g2d = (Graphics2D) G;
-            g2d.drawImage(spriteImage, createTransform(), null);
+            g2d.drawImage(scaledImage, createTransform(), null);
         }
 
     }
@@ -70,10 +77,20 @@ public class Sprite {
     private AffineTransform createTransform() {
         Vector2f screen = world.mul(translate);
         AffineTransform transform = AffineTransform.getTranslateInstance(screen.x, screen.y);
-        transform.scale(scale.x, scale.y);
+        //transform.scale(scale.x, scale.y);
         transform.rotate(rotateRadian);
-        transform.translate(-spriteImage.getWidth() / 2, -spriteImage.getHeight() / 2);
+        transform.translate(-scaledImage.getWidth() / 2, -scaledImage.getHeight() / 2);
         return transform;
+    }
+
+    public void scaleImage(Matrix3x3f view) {
+        Vector2f screenTopLeft = view.mul(topLeft);
+        Vector2f screenBottomRight = view.mul(bottomRight);
+        int scaledWidth = (int) Math.abs(screenBottomRight.x - screenTopLeft.x);
+        int scaledHeight = (int) Math.abs(screenBottomRight.y - screenTopLeft.y);
+        if (scaledImage == null || scaledWidth != scaledImage.getWidth() || scaledHeight != scaledImage.getHeight()) {
+            scaledImage = Utility.scaleImage(spriteImage, scaledWidth, scaledHeight);
+        }
     }
 
     public void update( float deltaTime, Matrix3x3f viewport){
