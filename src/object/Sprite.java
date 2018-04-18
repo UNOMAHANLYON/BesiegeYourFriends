@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class Sprite {
 
     private BoundingShapes outterBounds;
-    private ArrayList<BoundingShapes> innerBounds;
+    protected ArrayList<BoundingShapes> innerBounds;
     private BufferedImage spriteImage;
     private BufferedImage scaledImage;
     private Vector2f topLeft;
