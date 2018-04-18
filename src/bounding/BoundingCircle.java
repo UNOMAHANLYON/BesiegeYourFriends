@@ -2,6 +2,8 @@ package bounding;
 
 import util.Vector2f;
 
+import java.awt.*;
+
 public class BoundingCircle implements BoundingShapes {
 
     private Vector2f focus = new Vector2f();
@@ -76,6 +78,13 @@ public class BoundingCircle implements BoundingShapes {
 
         Vector2f dist = test.subtract(focus); //Find distance between point and circle
         return dist.lenSqr() < radius * radius; //Once again avoid using sqrt
+
+    }
+
+    @Override
+    public void render( Graphics G ) {
+
+        G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );
 
     }
 

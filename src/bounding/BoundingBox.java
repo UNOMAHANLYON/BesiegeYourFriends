@@ -2,6 +2,8 @@ package bounding;
 
 import util.Vector2f;
 
+import java.awt.*;
+
 public class BoundingBox implements BoundingShapes {
 
     private Vector2f min = new Vector2f();
@@ -83,6 +85,12 @@ public class BoundingBox implements BoundingShapes {
     public boolean pointInShape( Vector2f test ) {
 
         return test.x > min.x && test.x < max.x && test.y > min.y && test.y < max.y;
+
+    }
+
+    public void render( Graphics G ) {
+
+        G.drawRect( (int)min.x, (int)min.y, (int)max.x, (int)max.y );
 
     }
 

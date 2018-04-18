@@ -1,7 +1,7 @@
 package object;
 
-import javagames.util.Matrix3x3f;
-import javagames.util.Vector2f;
+import util.Matrix3x3f;
+import util.Vector2f;
 
 import java.awt.*;
 import java.util.ArrayList;
