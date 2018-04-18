@@ -1,6 +1,7 @@
 package BesiegeYourFreinds;
 
 import object.Background;
+import object.PlayerSprite;
 import util.SimpleFramework;
 
 import java.awt.*;
@@ -9,6 +10,7 @@ public class BYFApp extends SimpleFramework {
 
     public boolean show;
     public Background bg;
+    public PlayerSprite player;
 
     public BYFApp() {
         appTitle = "Besiege Your Friends";
@@ -25,6 +27,7 @@ public class BYFApp extends SimpleFramework {
         super.initialize();
 
         bg = new Background();
+        player = new PlayerSprite(bg);
     }
 
     @Override
@@ -35,13 +38,17 @@ public class BYFApp extends SimpleFramework {
     @Override
     protected void updateObjects(float delta) {
 
+        player.applyGravity(delta);
+
         bg.update(delta, getViewportTransform());
+        player.update(delta, getViewportTransform());
     }
 
     @Override
     protected void render(Graphics g) {
 
         bg.render(g);
+        player.render(g);
 
         super.render(g);
     }

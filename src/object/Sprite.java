@@ -14,9 +14,11 @@ import java.util.ArrayList;
 
 public class Sprite {
 
+    private final float gravity = 4.0f;
+
     private BoundingShapes outterBounds;
     protected ArrayList<BoundingShapes> innerBounds;
-    private BufferedImage spriteImage;
+    protected BufferedImage spriteImage;
     private BufferedImage scaledImage;
     private Vector2f topLeft;
     private Vector2f bottomRight;
@@ -103,6 +105,10 @@ public class Sprite {
 
 
 
+    }
+
+    public void applyGravity(float delta) {
+        translate.y -= gravity * delta;
     }
 
 }
