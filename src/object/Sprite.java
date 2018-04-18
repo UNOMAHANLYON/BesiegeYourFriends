@@ -33,6 +33,7 @@ public class Sprite {
         this.path = path;
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+        this.innerBounds = new ArrayList<BoundingShapes>();
         try {
 
             //spriteImage = ImageIO.read(getClass().getResource(path));
