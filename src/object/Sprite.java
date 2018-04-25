@@ -16,19 +16,19 @@ public class Sprite {
 
     private final float gravity = 4.0f;
 
-    private BoundingShapes outterBounds;
-    protected ArrayList<BoundingShapes> innerBounds;
+    public BoundingShapes outterBounds;
+    public ArrayList<BoundingShapes> innerBounds;
     protected BufferedImage spriteImage;
     private BufferedImage scaledImage;
     private Vector2f topLeft;
     private Vector2f bottomRight;
     private String path;
 
-    private Matrix3x3f world;
+    protected Matrix3x3f world;
     private float rotateRadian;
     private Vector2f translate;
     private Vector2f scale;
-    private boolean showBounds;
+    protected boolean showBounds;
 
     public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
 
@@ -55,11 +55,6 @@ public class Sprite {
     }
 
     public void render( Graphics G ) {
-
-        if ( showBounds ) {
-            showBounds(G);
-        }
-
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
             scaleImage(world);
@@ -67,12 +62,18 @@ public class Sprite {
             g2d.drawImage(scaledImage, createTransform(), null);
         }
 
+        if ( showBounds ) {
+            renderBounds(G);
+        }
+
     }
 
-    public void showBounds(Graphics G) {
+    public void renderBounds(Graphics G) {
+        System.out.println("rendering bounds...");
+        outterBounds.render(G, Color.BLACK);
 
         for (int i=0; i<innerBounds.size(); i++) {
-            innerBounds.get(i).render(G);
+            innerBounds.get(i).render(G, Color.GREEN);
         }
 
     }
@@ -103,12 +104,22 @@ public class Sprite {
 //        translate.translate( tx, ty );
 //        this.rotateRadian += rotate;
 
-
-
     }
 
     public void applyGravity(float delta) {
         translate.y -= gravity * delta;
+    }
+
+    public boolean intersects(Sprite sprite) {
+        if (this.outterBounds.intersects(sprite.outterBounds)) {
+            for(int i=0; i < this.innerBounds.size(); i++) {
+                for (int j=0; j < sprite.innerBounds.size(); j++) {
+                    if (this.innerBounds.get(i).intersects(sprite.innerBounds.get(j)))
+                        return true;
+                }
+            }
+        }
+        return false;
     }
 
 }

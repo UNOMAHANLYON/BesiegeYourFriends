@@ -38,8 +38,6 @@ public class BYFApp extends SimpleFramework {
     @Override
     protected void updateObjects(float delta) {
 
-        player.applyGravity(delta);
-
         bg.update(delta, getViewportTransform());
         player.update(delta, getViewportTransform());
     }

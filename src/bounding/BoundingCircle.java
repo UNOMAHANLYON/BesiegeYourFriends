@@ -81,9 +81,20 @@ public class BoundingCircle implements BoundingShapes {
 
     }
 
-    @Override
-    public void render( Graphics G ) {
+    public boolean intersects(BoundingShapes bound) {
+        if (bound instanceof BoundingBox) {
+            return this.intersectRectangle((BoundingBox) bound);
+        } else if (bound instanceof BoundingCircle) {
+            return this.intersectCircle((BoundingCircle) bound);
+        } else {
+            return false;
+        }
+    }
 
+    @Override
+    public void render( Graphics G, Color color ) {
+
+        G.setColor(color);
         G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );
 
     }
