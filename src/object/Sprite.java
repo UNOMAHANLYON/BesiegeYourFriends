@@ -24,7 +24,7 @@ public class Sprite {
     private Vector2f bottomRight;
     private String path;
 
-    protected Matrix3x3f world;
+    protected Matrix3x3f world, boundMatrix;
     private float rotateRadian;
     private Vector2f translate;
     private Vector2f scale;
@@ -55,6 +55,10 @@ public class Sprite {
     }
 
     public void render( Graphics G ) {
+        if ( showBounds ) {
+            renderBounds(G);
+        }
+
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
             scaleImage(world);
@@ -62,18 +66,16 @@ public class Sprite {
             g2d.drawImage(scaledImage, createTransform(), null);
         }
 
-        if ( showBounds ) {
-            renderBounds(G);
-        }
+
 
     }
 
     public void renderBounds(Graphics G) {
-        System.out.println("rendering bounds...");
-        outterBounds.render(G, Color.BLACK);
+        //System.out.println("rendering bounds...");
+        outterBounds.render(G, Color.BLACK, boundMatrix);
 
         for (int i=0; i<innerBounds.size(); i++) {
-            innerBounds.get(i).render(G, Color.GREEN);
+            innerBounds.get(i).render(G, Color.GREEN, boundMatrix);
         }
 
     }
@@ -100,10 +102,26 @@ public class Sprite {
     public void update( float deltaTime, Matrix3x3f viewport){
 
         world =  viewport;
+        updateWorld(viewport);
 //        this.scale = scale;
 //        translate.translate( tx, ty );
 //        this.rotateRadian += rotate;
 
+    }
+
+    public void updateWorld() {
+        boundMatrix = Matrix3x3f.identity();
+
+        boundMatrix = boundMatrix.mul(Matrix3x3f.scale(scale));
+        //worldMatrix = worldMatrix.mul(Matrix3x3f.shear(shear));
+        boundMatrix = boundMatrix.mul(Matrix3x3f.rotate(rotateRadian));
+        boundMatrix = boundMatrix.mul(Matrix3x3f.translate(translate));
+    }
+
+    public void updateWorld(Matrix3x3f viewport) {
+        updateWorld();
+
+        boundMatrix = boundMatrix.mul(viewport);
     }
 
     public void applyGravity(float delta) {

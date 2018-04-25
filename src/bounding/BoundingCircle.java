@@ -1,5 +1,6 @@
 package bounding;
 
+import util.Matrix3x3f;
 import util.Vector2f;
 
 import java.awt.*;
@@ -92,7 +93,7 @@ public class BoundingCircle implements BoundingShapes {
     }
 
     @Override
-    public void render( Graphics G, Color color ) {
+    public void render( Graphics G, Color color, Matrix3x3f world ) {
 
         G.setColor(color);
         G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );

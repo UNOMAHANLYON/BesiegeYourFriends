@@ -1,5 +1,6 @@
 package bounding;
 
+import util.Matrix3x3f;
 import util.Vector2f;
 
 import java.awt.*;
@@ -98,9 +99,17 @@ public class BoundingBox implements BoundingShapes {
         }
     }
 
-    public void render( Graphics G, Color color ) {
+    public void render( Graphics G, Color color, Matrix3x3f world ) {
+        Vector2f tl = world.mul(new Vector2f(min.x, max.y));
+        Vector2f br = world.mul(new Vector2f(max.x, min.y));
+
+        int width = (int) (br.x - tl.x);
+        int height = (int) (br.y - tl.y);
+
+        //System.out.println("TopLeft: X" + tl.x + " Y" + tl.y + " Width: " + width + " Height: " + height);
+
         G.setColor(color);
-        G.drawRect((int)min.x, (int)max.y, (int)(max.x - min.x), (int)(max.y - min.y));
+        G.drawRect((int)tl.x, (int)tl.y, width, height);
 
     }
 

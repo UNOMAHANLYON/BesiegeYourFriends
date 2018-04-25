@@ -46,6 +46,7 @@ public class PlayerSprite extends Sprite {
     @Override
     public void update( float deltaTime, Matrix3x3f viewport){
         world = viewport;
-        //this.applyGravity(deltaTime);
+        updateWorld(viewport);
+        this.applyGravity(deltaTime);
     }
 }
