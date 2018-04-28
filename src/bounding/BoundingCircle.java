@@ -10,6 +10,8 @@ public class BoundingCircle implements BoundingShapes {
     private Vector2f focus = new Vector2f();
     private float radius;
 
+    private Matrix3x3f world;
+
     public BoundingCircle() {
 
         this.focus.x = 0.0f;
@@ -92,12 +94,15 @@ public class BoundingCircle implements BoundingShapes {
         }
     }
 
-    @Override
     public void render( Graphics G, Color color, Matrix3x3f world ) {
 
         G.setColor(color);
         G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );
 
+    }
+
+    public void updateWorld(Matrix3x3f world) {
+        this.world = world;
     }
 
 }

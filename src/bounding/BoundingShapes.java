@@ -17,4 +17,6 @@ public interface BoundingShapes {
 
     public boolean intersects (BoundingShapes bound);
 
+    public void updateWorld (Matrix3x3f world);
+
 }

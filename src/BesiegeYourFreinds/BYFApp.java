@@ -3,6 +3,7 @@ package BesiegeYourFreinds;
 import object.Background;
 import object.PlayerSprite;
 import util.SimpleFramework;
+import util.Vector2f;
 
 import java.awt.*;
 
@@ -28,6 +29,8 @@ public class BYFApp extends SimpleFramework {
 
         bg = new Background();
         player = new PlayerSprite(bg);
+
+        player.setLocation(new Vector2f(-7f, -3.125f));
     }
 
     @Override
@@ -38,14 +41,15 @@ public class BYFApp extends SimpleFramework {
     @Override
     protected void updateObjects(float delta) {
 
-        bg.update(delta, getViewportTransform());
-        player.update(delta, getViewportTransform());
+        bg.updateBG(delta, getViewportTransform());
+        player.updatePlayer(delta, getViewportTransform());
+
     }
 
     @Override
     protected void render(Graphics g) {
 
-        bg.render(g);
+        bg.renderBG(g);
         player.render(g);
 
         super.render(g);

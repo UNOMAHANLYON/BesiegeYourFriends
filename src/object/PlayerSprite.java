@@ -18,6 +18,7 @@ public class PlayerSprite extends Sprite {
         super("catapultspritesheet.png", new Vector2f(-0.375f, 0.375f), new Vector2f(0.375f, -0.375f));
 
         this.showBounds = true;
+        this.gravityApplies = true;
         this.bg = bg;
 
         try {
@@ -43,10 +44,23 @@ public class PlayerSprite extends Sprite {
         spriteImage = spriteSheet.getSubimage((col * 64) - 64, (row * 64) - 64, width, height);
     }
 
-    @Override
-    public void update( float deltaTime, Matrix3x3f viewport){
-        world = viewport;
-        updateWorld(viewport);
-        this.applyGravity(deltaTime);
+    public void updatePlayer(float deltaTime, Matrix3x3f viewport) {
+        update(deltaTime, viewport);
+
+        if(this.intersectsGround(bg)) {
+//            do {
+//                translate.y += 0.1f;
+//            } while (this.intersectsGround(bg));
+            gravityApplies = false;
+        }
     }
+
+    public boolean intersectsGround(Sprite bg) {
+        for(int i=0; i < this.innerBounds.size(); i++) {
+            if (this.innerBounds.get(i).intersects(this.bg.groundBound))
+                return true;
+        }
+        return false;
+    }
+
 }
