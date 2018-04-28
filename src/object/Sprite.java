@@ -164,13 +164,15 @@ public class Sprite {
 
     public void moveLeft ( float value ) {
 
-        translate.subtract(new Vector2f(value, 0 ));
+        //translate.subtract(new Vector2f(value, 0 ));
+        translate.x -= value;
 
     }
 
     public void moveRight ( float value  ) {
 
-        translate.add(new Vector2f( value, 0 ));
+        //translate.add(new Vector2f( value, 0 ));
+        translate.x += value;
 
     }
 

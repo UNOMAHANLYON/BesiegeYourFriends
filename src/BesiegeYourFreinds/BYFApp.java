@@ -36,16 +36,17 @@ public class BYFApp extends SimpleFramework {
 
     @Override
     protected void processInput(float delta) {
+        super.processInput(delta);
 
         if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
 
-            player.moveRight( 0.25f );
+            player.moveRight( 0.25f * delta );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
 
-            player.moveLeft( 0.25f );
+            player.moveLeft( 0.25f * delta);
 
         }
 

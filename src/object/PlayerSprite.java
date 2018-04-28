@@ -12,6 +12,7 @@ public class PlayerSprite extends Sprite {
 
     private BufferedImage spriteSheet;
     private Background bg;
+    private float moveDirection = 0f;
 
     public PlayerSprite(Background bg) {
 
@@ -53,6 +54,14 @@ public class PlayerSprite extends Sprite {
 //            } while (this.intersectsGround(bg));
             gravityApplies = false;
         }
+
+        if(this.intersects(bg)) {
+            do {
+                translate.x += moveDirection;
+                update(deltaTime, viewport);
+                System.out.println("backtrack");
+            } while(this.intersects(bg));
+        }
     }
 
     public boolean intersectsGround(Sprite bg) {
@@ -61,6 +70,20 @@ public class PlayerSprite extends Sprite {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public void moveLeft ( float value ) {
+        super.moveLeft(value);
+
+        moveDirection = 0.01f;
+    }
+
+    @Override
+    public void moveRight ( float value ) {
+        super.moveRight(value);
+
+        moveDirection = -0.01f;
     }
 
 }
