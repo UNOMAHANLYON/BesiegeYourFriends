@@ -5,6 +5,7 @@ import object.PlayerSprite;
 import util.SimpleFramework;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class BYFApp extends SimpleFramework {
 
@@ -32,6 +33,12 @@ public class BYFApp extends SimpleFramework {
 
     @Override
     protected void processInput(float delta) {
+
+        if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
+
+            
+
+        }
 
     }
 
