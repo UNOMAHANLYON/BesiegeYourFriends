@@ -1,5 +1,6 @@
 package bounding;
 
+import util.Matrix3x3f;
 import util.Vector2f;
 
 import java.awt.*;
@@ -8,6 +9,8 @@ public class BoundingCircle implements BoundingShapes {
 
     private Vector2f focus = new Vector2f();
     private float radius;
+
+    private Matrix3x3f world;
 
     public BoundingCircle() {
 
@@ -81,11 +84,25 @@ public class BoundingCircle implements BoundingShapes {
 
     }
 
-    @Override
-    public void render( Graphics G ) {
+    public boolean intersects(BoundingShapes bound) {
+        if (bound instanceof BoundingBox) {
+            return this.intersectRectangle((BoundingBox) bound);
+        } else if (bound instanceof BoundingCircle) {
+            return this.intersectCircle((BoundingCircle) bound);
+        } else {
+            return false;
+        }
+    }
 
+    public void render( Graphics G, Color color, Matrix3x3f world ) {
+
+        G.setColor(color);
         G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );
 
+    }
+
+    public void updateWorld(Matrix3x3f world) {
+        this.world = world;
     }
 
 }

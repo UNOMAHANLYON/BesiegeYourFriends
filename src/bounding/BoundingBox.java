@@ -1,5 +1,6 @@
 package bounding;
 
+import util.Matrix3x3f;
 import util.Vector2f;
 
 import java.awt.*;
@@ -8,6 +9,11 @@ public class BoundingBox implements BoundingShapes {
 
     private Vector2f min = new Vector2f();
     private Vector2f max = new Vector2f();
+    
+    private Vector2f minW = new Vector2f();
+    private Vector2f maxW = new Vector2f();
+
+    private Matrix3x3f world = new Matrix3x3f();
 
     public BoundingBox() {
 
@@ -45,18 +51,30 @@ public class BoundingBox implements BoundingShapes {
 
     }
 
+    public Vector2f getMinW(){
+
+        return minW;
+
+    }
+
+    public Vector2f getMaxW(){
+
+        return maxW;
+
+    }
+
     @Override
     public boolean intersectRectangle( BoundingBox test) {
-        Vector2f minB = test.getMin();
-        Vector2f maxB = test.getMax();
+        Vector2f minWB = test.getMinW();
+        Vector2f maxWB = test.getMaxW();
 
-        if (min.x > maxB.x || minB.x > max.x) {//Check if Box A is to the right of Box B and vice-versa
+        if (minW.x > maxWB.x || minWB.x > maxW.x) {//Check if Box A is to the right of Box B and vice-versa
 
             return false; //If so, they do not overlap
 
         }
 
-        if (min.y > maxB.y || minB.y > max.y) {//Check if Box is above Box B and vice-versa
+        if (minW.y > maxWB.y || minWB.y > maxW.y) {//Check if Box is above Box B and vice-versa
 
             return false; //If so, they do not overlap
 
@@ -73,10 +91,10 @@ public class BoundingBox implements BoundingShapes {
         Vector2f c = test.getFocus();
         float r = test.getRadius();
 
-        if (c.x < min.x) d += (c.x - min.x) * (c.x - min.x);
-        if (c.x > max.x) d += (c.x - max.x) * (c.x - max.x);
-        if (c.y < min.y) d += (c.y - min.y) * (c.y - min.y);
-        if (c.y > max.y) d += (c.y - max.y) * (c.y - max.y);
+        if (c.x < minW.x) d += (c.x - minW.x) * (c.x - minW.x);
+        if (c.x > maxW.x) d += (c.x - maxW.x) * (c.x - maxW.x);
+        if (c.y < minW.y) d += (c.y - minW.y) * (c.y - minW.y);
+        if (c.y > maxW.y) d += (c.y - maxW.y) * (c.y - maxW.y);
         return d < r * r;
 
     }
@@ -84,14 +102,46 @@ public class BoundingBox implements BoundingShapes {
     @Override
     public boolean pointInShape( Vector2f test ) {
 
-        return test.x > min.x && test.x < max.x && test.y > min.y && test.y < max.y;
+        return test.x > minW.x && test.x < maxW.x && test.y > minW.y && test.y < maxW.y;
 
     }
 
-    public void render( Graphics G ) {
+    public boolean intersects(BoundingShapes bound) {
+        if (bound instanceof BoundingBox) {
+            return this.intersectRectangle((BoundingBox) bound);
+        } else if (bound instanceof BoundingCircle) {
+            return this.intersectCircle((BoundingCircle) bound);
+        } else {
+            return false;
+        }
+    }
 
-        G.drawRect( (int)min.x, (int)min.y, (int)max.x, (int)max.y );
+    public void render( Graphics G, Color color, Matrix3x3f viewport ) {
+        //world = world.mul(viewport);
 
+        Vector2f tl = viewport.mul(new Vector2f(minW.x, maxW.y));
+        Vector2f br = viewport.mul(new Vector2f(maxW.x, minW.y));
+
+//        Vector2f tl = new Vector2f(minW.x, maxW.y);
+//        Vector2f br = new Vector2f(maxW.x, minW.y);
+
+
+
+        int width = (int) (br.x - tl.x);
+        int height = (int) (br.y - tl.y);
+
+//        System.out.println("TopLeft: X" + tl.x + " Y" + tl.y + " Width: " + width + " Height: " + height);
+
+        G.setColor(color);
+        G.drawRect((int)tl.x, (int)tl.y, width, height);
+
+    }
+
+    public void updateWorld(Matrix3x3f world) {
+        this.world = world;
+        
+        minW = world.mul(min);
+        maxW = world.mul(max);
     }
 
 }

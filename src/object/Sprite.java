@@ -14,19 +14,22 @@ import java.util.ArrayList;
 
 public class Sprite {
 
-    private BoundingShapes outterBounds;
-    protected ArrayList<BoundingShapes> innerBounds;
-    private BufferedImage spriteImage;
+    private final float gravity = -4.0f;
+
+    public BoundingShapes outterBounds;
+    public ArrayList<BoundingShapes> innerBounds;
+    protected BufferedImage spriteImage;
     private BufferedImage scaledImage;
     private Vector2f topLeft;
     private Vector2f bottomRight;
     private String path;
 
-    private Matrix3x3f world;
+    protected Matrix3x3f world, boundMatrix, viewport;
     private float rotateRadian;
-    private Vector2f translate;
+    protected Vector2f translate;
     private Vector2f scale;
-    private boolean showBounds;
+    protected boolean showBounds;
+    public boolean gravityApplies;
 
     public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
 
@@ -49,14 +52,12 @@ public class Sprite {
         translate = new Vector2f(0, 0);
         scale = new Vector2f(1, 1);
         rotateRadian = 0;
+        gravityApplies = false;
 
     }
 
     public void render( Graphics G ) {
 
-        if ( showBounds ) {
-            showBounds(G);
-        }
 
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
@@ -65,12 +66,19 @@ public class Sprite {
             g2d.drawImage(scaledImage, createTransform(), null);
         }
 
+        if ( showBounds ) {
+            renderBounds(G);
+        }
+
     }
 
-    public void showBounds(Graphics G) {
+    public void renderBounds(Graphics G) {
+        //System.out.println("rendering bounds...");
+        if (outterBounds != null)
+            outterBounds.render(G, Color.BLACK, viewport);
 
         for (int i=0; i<innerBounds.size(); i++) {
-            innerBounds.get(i).render(G);
+            innerBounds.get(i).render(G, Color.RED, viewport);
         }
 
     }
@@ -96,12 +104,75 @@ public class Sprite {
 
     public void update( float deltaTime, Matrix3x3f viewport){
 
+        if (gravityApplies)
+            this.applyGravity(deltaTime);
+
         world =  viewport;
+        this.viewport = viewport;
+        updateBoundWorld();
+
+        outterBounds.updateWorld(boundMatrix);
+        for (int i=0; i < this.innerBounds.size(); i++) {
+            innerBounds.get(i).updateWorld(boundMatrix);
+        }
+
+
 //        this.scale = scale;
 //        translate.translate( tx, ty );
 //        this.rotateRadian += rotate;
 
+    }
 
+    public void updateBoundWorld() {
+        boundMatrix = Matrix3x3f.identity();
+
+        boundMatrix = boundMatrix.mul(Matrix3x3f.scale(scale));
+        //worldMatrix = worldMatrix.mul(Matrix3x3f.shear(shear));
+        boundMatrix = boundMatrix.mul(Matrix3x3f.rotate(rotateRadian));
+        boundMatrix = boundMatrix.mul(Matrix3x3f.translate(translate));
+    }
+
+    public void updateBoundWorld(Matrix3x3f viewport) {
+        updateBoundWorld();
+
+        boundMatrix = boundMatrix.mul(viewport);
+    }
+
+    public void applyGravity(float delta) {
+        translate.y += gravity * delta;
+    }
+
+    public boolean intersects(Sprite sprite) {
+        if (this.outterBounds.intersects(sprite.outterBounds)) {
+            for(int i=0; i < this.innerBounds.size(); i++) {
+                for (int j=0; j < sprite.innerBounds.size(); j++) {
+                    if (this.innerBounds.get(i).intersects(sprite.innerBounds.get(j)))
+                        return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public void setLocation(Vector2f location) {
+        translate = location;
+    }
+
+    public void setLocationY(float value) {
+        translate.y = value;
+    }
+
+    public void moveLeft ( float value ) {
+
+        //translate.subtract(new Vector2f(value, 0 ));
+        translate.x -= value;
+
+    }
+
+    public void moveRight ( float value  ) {
+
+        //translate.add(new Vector2f( value, 0 ));
+        translate.x += value;
 
     }
 

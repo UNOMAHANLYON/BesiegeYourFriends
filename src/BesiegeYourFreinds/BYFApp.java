@@ -1,14 +1,18 @@
 package BesiegeYourFreinds;
 
 import object.Background;
+import object.PlayerSprite;
 import util.SimpleFramework;
+import util.Vector2f;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class BYFApp extends SimpleFramework {
 
     public boolean show;
     public Background bg;
+    public PlayerSprite player;
 
     public BYFApp() {
         appTitle = "Besiege Your Friends";
@@ -25,23 +29,42 @@ public class BYFApp extends SimpleFramework {
         super.initialize();
 
         bg = new Background();
+        player = new PlayerSprite(bg);
+
+        player.setLocation(new Vector2f(-7f, -3.125f));
     }
 
     @Override
     protected void processInput(float delta) {
+        super.processInput(delta);
+
+        if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
+
+            player.moveRight( 0.25f * delta );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
+
+            player.moveLeft( 0.25f * delta);
+
+        }
 
     }
 
     @Override
     protected void updateObjects(float delta) {
 
-        bg.update(delta, getViewportTransform());
+        bg.updateBG(delta, getViewportTransform());
+        player.updatePlayer(delta, getViewportTransform());
+
     }
 
     @Override
     protected void render(Graphics g) {
 
-        bg.render(g);
+        bg.renderBG(g);
+        player.render(g);
 
         super.render(g);
     }
