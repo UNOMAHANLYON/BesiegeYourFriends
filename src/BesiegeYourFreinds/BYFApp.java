@@ -36,7 +36,13 @@ public class BYFApp extends SimpleFramework {
 
         if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
 
-            
+            player.moveRight( 0.25f );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
+
+            player.moveLeft( 0.25f );
 
         }
 
