@@ -162,4 +162,16 @@ public class Sprite {
         translate.y = value;
     }
 
+    public void moveLeft ( float value ) {
+
+        translate.subtract(new Vector2f(value, 0 ));
+
+    }
+
+    public void moveRight ( float value  ) {
+
+        translate.add(new Vector2f( value, 0 ));
+
+    }
+
 }

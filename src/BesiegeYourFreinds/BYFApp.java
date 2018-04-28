@@ -6,6 +6,7 @@ import util.SimpleFramework;
 import util.Vector2f;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 public class BYFApp extends SimpleFramework {
 
@@ -35,6 +36,18 @@ public class BYFApp extends SimpleFramework {
 
     @Override
     protected void processInput(float delta) {
+
+        if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
+
+            player.moveRight( 0.25f );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
+
+            player.moveLeft( 0.25f );
+
+        }
 
     }
 
