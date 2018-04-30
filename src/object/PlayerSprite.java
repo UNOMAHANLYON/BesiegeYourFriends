@@ -13,14 +13,34 @@ public class PlayerSprite extends Sprite {
     private BufferedImage spriteSheet;
     private Background bg;
     private float moveDirection = 0f;
+    private float power;
+    private float angle;
+    private final float maxPower = 100;
+    private final float maxAngle = 180;
+    private int player;
+    private int shotDirection;
 
-    public PlayerSprite(Background bg) {
+    public PlayerSprite(Background bg, int player ) {
 
         super("catapultspritesheet.png", new Vector2f(-0.375f, 0.375f), new Vector2f(0.375f, -0.375f));
 
         this.showBounds = true;
         this.gravityApplies = true;
         this.bg = bg;
+        this.player = player;
+        power = 50;
+        angle = 0;
+
+        switch ( player ) {
+
+            case 1:
+                shotDirection = 1;
+                break;
+            case 2:
+                shotDirection = -1;
+                break;
+
+        }
 
         try {
 
