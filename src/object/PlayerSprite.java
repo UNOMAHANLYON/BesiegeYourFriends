@@ -14,7 +14,7 @@ public class PlayerSprite extends Sprite {
     private float moveDirection = 0f;
     public float power;
     public float angle;
-    private final float maxPower = 15;
+    private final float maxPower = 20;
     private final float maxAngle = 180;
     private int player;
     private int shotDirection;
@@ -44,14 +44,23 @@ public class PlayerSprite extends Sprite {
 
         }
 
-        setSubImage(1, 1, 64, 64);
+        switch ( player ) {
+            case 1:
+                setSubImage(1, 1, 64, 64);
+                break;
+            case 2:
+                setSubImage(1, 7, 64, 64);
+                break;
+        }
 
+        scale = new Vector2f( shotDirection, 1 );
         outterBounds = new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f));
         innerBounds.add(new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f)));
 
     }
 
     public void updatePlayer(float deltaTime, Matrix3x3f viewport) {
+
         update(deltaTime, viewport);
 
         if(this.intersectsGround(bg)) {
@@ -92,27 +101,42 @@ public class PlayerSprite extends Sprite {
         moveDirection = -0.01f;
     }
 
-    public void addPower ( ){
+    public void addPower ( float delta ){
 
-            power ++;
-
-    }
-
-    public void raiseAngle ( ){
-
-            angle ++;
+        if ( power < maxPower ) {
+            power = power + 2 * delta;
+        } else {
+            power = 0;
+        }
 
     }
 
-    public void lowerAngle ( ){
+    public void raiseAngle ( float delta ){
 
-            angle --;
+        if ( angle < maxAngle ) {
+            angle = angle + 5* delta;
+        } else {
+            angle = 0;
+        }
 
     }
 
-    public void subPower ( ){
+    public void lowerAngle ( float delta ){
 
-            power --;
+        if (angle != 0) {
+            angle =  angle - 5*delta;
+        } else {
+            angle = maxAngle;
+        }
+
+    }
+
+    public void subPower ( float delta ){
+        if ( power != 0 ) {
+            power = power - 2*delta;
+        } else {
+            power = maxPower;
+        }
 
     }
 
