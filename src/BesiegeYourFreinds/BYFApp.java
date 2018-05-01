@@ -15,8 +15,10 @@ public class BYFApp extends SimpleFramework {
     public Background bg;
     public PlayerSprite player1;
     public PlayerSprite player2;
+    public PlayerSprite currentPlayer;
     public Ammo testAmmo;
     public int turn;
+    private boolean disableControls;
 
     public BYFApp() {
         appTitle = "Besiege Your Friends";
@@ -36,8 +38,10 @@ public class BYFApp extends SimpleFramework {
         player1 = new PlayerSprite(bg, 1);
         player2 = new PlayerSprite(bg, 2);
         turn = 1;
+        currentPlayer = player1;
+        disableControls = false;
 
-        testAmmo = new Ammo(new Vector2f(-7f, -3.125f), 15f, 45f, 1);
+        //testAmmo = new Ammo(new Vector2f(-7f, -3.125f), 15f, 45f, 1);
 
         player1.setLocation(new Vector2f(-7f, -3.125f));
         player2.setLocation(new Vector2f ( 7f, -3.125f ));
@@ -47,63 +51,77 @@ public class BYFApp extends SimpleFramework {
     protected void processInput(float delta) {
         super.processInput(delta);
 
+        if ( turn == 1 ) {
+
+            currentPlayer = player1;
+
+        } else {
+
+            currentPlayer = player2;
+
+        }
+
         if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
 
-            player1.moveRight( 0.25f * delta );
+            currentPlayer.moveRight( 0.25f * delta );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
 
-            player1.moveLeft( 0.25f * delta);
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_W ) ) {
-
-            player1.raiseAngle( true );
+            currentPlayer.moveLeft( 0.25f * delta);
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_W ) ) {
 
-            player1.raiseAngle( false );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_S ) ) {
-
-            player1.lowerAngle( true );
+            currentPlayer.raiseAngle(  );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_S ) ) {
 
-            player1.lowerAngle( false );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_Q ) ) {
-
-            player1.subPower( true );
+            currentPlayer.lowerAngle(  );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_Q ) ) {
 
-            player1.subPower( false );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_E ) ) {
-
-            player1.addPower( true );
+            currentPlayer.subPower(  );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_E ) ) {
 
-            player1.addPower( false );
+            currentPlayer.addPower(  );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_X ) ) {
+
+            currentPlayer.cycleAmmoLeft();
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_C ) ) {
+
+            currentPlayer.cycleAmmoRight();
+
+        }
+
+        if ( keyboard.keyDownOnce( KeyEvent.VK_SPACE ) ) {
+
+            if ( turn == 1 ) {
+
+                testAmmo = new Ammo( new Vector2f(player1.getLoc()), player1.power, player1.angle, 1 );
+                turn = 2;
+
+            }else {
+
+                testAmmo = new Ammo( new Vector2f(player2.getLoc()), player2.power, player2.angle, 2 );
+                turn = 1;
+
+            }
 
         }
 
@@ -117,7 +135,8 @@ public class BYFApp extends SimpleFramework {
         bg.updateBG(delta, getViewportTransform());
         player1.updatePlayer(delta, getViewportTransform());
         player2.updatePlayer(delta, getViewportTransform());
-        testAmmo.update(delta, getViewportTransform());
+        if (testAmmo != null )
+            testAmmo.update(delta, getViewportTransform());
 
     }
 
@@ -127,7 +146,8 @@ public class BYFApp extends SimpleFramework {
         bg.renderBG(g);
         player1.render(g);
         player2.render(g);
-        testAmmo.render(g);
+        if (testAmmo != null)
+            testAmmo.render(g);
 
         super.render(g);
     }
