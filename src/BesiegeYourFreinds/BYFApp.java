@@ -12,7 +12,8 @@ public class BYFApp extends SimpleFramework {
 
     public boolean show;
     public Background bg;
-    public PlayerSprite player;
+    public PlayerSprite player1;
+    public PlayerSprite player2;
 
     public BYFApp() {
         appTitle = "Besiege Your Friends";
@@ -29,9 +30,11 @@ public class BYFApp extends SimpleFramework {
         super.initialize();
 
         bg = new Background();
-        player = new PlayerSprite(bg);
+        player1 = new PlayerSprite(bg, 1);
+        player2 = new PlayerSprite(bg, 1);
 
-        player.setLocation(new Vector2f(-7f, -3.125f));
+
+        player1.setLocation(new Vector2f(-7f, -3.125f));
     }
 
     @Override
@@ -40,15 +43,65 @@ public class BYFApp extends SimpleFramework {
 
         if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
 
-            player.moveRight( 0.25f * delta );
+            player1.moveRight( 0.25f * delta );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
 
-            player.moveLeft( 0.25f * delta);
+            player1.moveLeft( 0.25f * delta);
 
         }
+
+        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_W ) ) {
+
+            player1.raiseAngle( true );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_W ) ) {
+
+            player1.raiseAngle( false );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_S ) ) {
+
+            player1.lowerAngle( true );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_S ) ) {
+
+            player1.lowerAngle( false );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_Q ) ) {
+
+            player1.subPower( true );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_Q ) ) {
+
+            player1.subPower( false );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_SHIFT ) && keyboard.keyDown( KeyEvent.VK_E ) ) {
+
+            player1.addPower( true );
+
+        }
+
+        if ( keyboard.keyDown( KeyEvent.VK_E ) ) {
+
+            player1.addPower( false );
+
+        }
+
+
 
     }
 
@@ -56,7 +109,7 @@ public class BYFApp extends SimpleFramework {
     protected void updateObjects(float delta) {
 
         bg.updateBG(delta, getViewportTransform());
-        player.updatePlayer(delta, getViewportTransform());
+        player1.updatePlayer(delta, getViewportTransform());
 
     }
 
@@ -64,7 +117,7 @@ public class BYFApp extends SimpleFramework {
     protected void render(Graphics g) {
 
         bg.renderBG(g);
-        player.render(g);
+        player1.render(g);
 
         super.render(g);
     }
