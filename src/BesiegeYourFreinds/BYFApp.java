@@ -75,35 +75,35 @@ public class BYFApp extends SimpleFramework {
 
         if ( keyboard.keyDown( KeyEvent.VK_W ) ) {
 
-            currentPlayer.raiseAngle(  );
+            currentPlayer.raiseAngle( delta );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_S ) ) {
 
-            currentPlayer.lowerAngle(  );
+            currentPlayer.lowerAngle( delta );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_Q ) ) {
 
-            currentPlayer.subPower(  );
+            currentPlayer.subPower( delta );
 
         }
 
         if ( keyboard.keyDown( KeyEvent.VK_E ) ) {
 
-            currentPlayer.addPower(  );
+            currentPlayer.addPower( delta );
 
         }
 
-        if ( keyboard.keyDown( KeyEvent.VK_X ) ) {
+        if ( keyboard.keyDownOnce( KeyEvent.VK_X ) ) {
 
             currentPlayer.cycleAmmoLeft();
 
         }
 
-        if ( keyboard.keyDown( KeyEvent.VK_C ) ) {
+        if ( keyboard.keyDownOnce( KeyEvent.VK_C ) ) {
 
             currentPlayer.cycleAmmoRight();
 
@@ -160,8 +160,8 @@ public class BYFApp extends SimpleFramework {
         }
 
         g.setColor(Color.BLACK);
-        g.drawString("Angle: " + player1.angle, 5, 60 );
-        g.drawString("Power: " + player1.power, 5, 75 );
+        g.drawString("Angle: " + (int) player1.angle, 5, 60 );
+        g.drawString("Power: " + (int) player1.power, 5, 75 );
 
         g.setColor(Color.GREEN);
         g.fillRect(945, 5, player2.health * 2, 25);
@@ -179,8 +179,8 @@ public class BYFApp extends SimpleFramework {
         }
 
         g.setColor(Color.BLACK);
-        g.drawString("Angle: " + player2.angle , 945, 60 );
-        g.drawString("Power: " + player2.power , 945, 75 );
+        g.drawString("Angle: " + (int) player2.angle , 945, 60 );
+        g.drawString("Power: " + (int) player2.power , 945, 75 );
 
         player1.render(g);
         player2.render(g);
