@@ -84,6 +84,12 @@ public class PlayerSprite extends Sprite {
         }
     }
 
+    public Vector2f getLoc(){
+
+        return new Vector2f( topLeft.subtract(bottomRight) );
+
+    }
+
     public boolean intersectsGround(Sprite bg) {
         for(int i=0; i < this.innerBounds.size(); i++) {
             if (this.innerBounds.get(i).intersects(this.bg.groundBound))

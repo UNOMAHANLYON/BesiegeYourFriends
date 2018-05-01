@@ -14,14 +14,14 @@ import java.util.ArrayList;
 
 public class Sprite {
 
-    private final float gravity = -4.0f;
+    protected final float gravity = -4.0f;
 
     public BoundingShapes outterBounds;
     public ArrayList<BoundingShapes> innerBounds;
     protected BufferedImage spriteImage;
     private BufferedImage scaledImage;
-    private Vector2f topLeft;
-    private Vector2f bottomRight;
+    protected Vector2f topLeft;
+    protected Vector2f bottomRight;
     protected Vector2f focus;
     private String path;
 

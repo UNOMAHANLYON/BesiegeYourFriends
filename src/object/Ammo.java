@@ -1,6 +1,7 @@
 package object;
 
 import bounding.BoundingCircle;
+import util.Matrix3x3f;
 import util.Vector2f;
 
 public class Ammo extends Sprite {
@@ -26,6 +27,22 @@ public class Ammo extends Sprite {
 
     }
 
+    @Override
+    public void update( float deltaTime, Matrix3x3f viewport) {
 
+        horizontal = (horizontal + gravity) * deltaTime;
+        super.translate.x += vertical * deltaTime;
+        super.translate.y += horizontal;
+
+        world =  viewport;
+        this.viewport = viewport;
+        updateBoundWorld();
+
+        outterBounds.updateWorld(boundMatrix);
+        for (int i=0; i < this.innerBounds.size(); i++) {
+            innerBounds.get(i).updateWorld(boundMatrix);
+        }
+
+    }
 
 }
