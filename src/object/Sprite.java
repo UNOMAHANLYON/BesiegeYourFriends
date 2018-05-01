@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Sprite {
 
-    protected final float gravity = -4.0f;
+    protected final float gravity = -9.8f;
 
     public BoundingShapes outterBounds;
     public ArrayList<BoundingShapes> innerBounds;

@@ -12,15 +12,13 @@ public class Ammo extends Sprite {
     private int type;
     private int direction;
 
-    public Ammo( Vector2f location, float power, float angle, int player ) {
+    public Ammo( Vector2f location, float power, Float angle, int player ) {
 
         super( "ammospritesheet.png", new Vector2f(-0.175f, 0.175f), new Vector2f(0.175f, -0.175f));
 
     //    this.type = type;
         this.showBounds = true;
         this.gravityApplies = true;
-        this.horizontal = (float) Math.cos( angle ) * power;
-        this.vertical = (float) Math.sin( angle ) * power;
 
         switch(player) {
 
@@ -30,6 +28,25 @@ public class Ammo extends Sprite {
             case 2:
                 direction = -1;
                 break;
+
+        }
+
+        if ( angle.compareTo(90.0f) > 0 ) {
+
+            angle = 180 - angle;
+            direction *= -1;
+
+        }
+
+        if ( angle.compareTo(90.0f)!= 0 ) {
+
+            this.horizontal = (float) Math.cos(Math.toRadians(angle)) * power;
+            this.vertical = (float) Math.sin(Math.toRadians(angle)) * power;
+
+        } else {
+
+            this.horizontal = 0;
+            this.vertical = power;
 
         }
 
