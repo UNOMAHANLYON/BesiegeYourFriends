@@ -12,8 +12,8 @@ public class PlayerSprite extends Sprite {
 
     private Background bg;
     private float moveDirection = 0f;
-    private float power;
-    private float angle;
+    public float power;
+    public float angle;
     private final float maxPower = 100;
     private final float maxAngle = 180;
     private int player;
