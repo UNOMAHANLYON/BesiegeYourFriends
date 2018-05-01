@@ -10,15 +10,16 @@ import java.io.File;
 
 public class PlayerSprite extends Sprite {
 
-    private BufferedImage spriteSheet;
     private Background bg;
     private float moveDirection = 0f;
-    private float power;
-    private float angle;
-    private final float maxPower = 100;
+    public float power;
+    public float angle;
+    private final float maxPower = 15;
     private final float maxAngle = 180;
     private int player;
     private int shotDirection;
+    private int selectedAmmo;
+    private final int numAmmoTypes = 3;
 
     public PlayerSprite(Background bg, int player ) {
 
@@ -28,8 +29,9 @@ public class PlayerSprite extends Sprite {
         this.gravityApplies = true;
         this.bg = bg;
         this.player = player;
-        power = 50;
-        angle = 0;
+        power = 15;
+        angle = 45;
+        selectedAmmo = 0;
 
         switch ( player ) {
 
@@ -42,27 +44,11 @@ public class PlayerSprite extends Sprite {
 
         }
 
-        try {
-
-            //spriteImage = ImageIO.read(getClass().getResource(path));
-            spriteSheet = ImageIO.read(new File("catapultspritesheet.png"));
-
-        } catch ( Exception e ) {
-
-            e.printStackTrace();
-            spriteSheet = null;
-
-        }
-
         setSubImage(1, 1, 64, 64);
 
         outterBounds = new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f));
         innerBounds.add(new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f)));
 
-    }
-
-    public void setSubImage(int col, int row, int width, int height) {
-        spriteImage = spriteSheet.getSubimage((col * 64) - 64, (row * 64) - 64, width, height);
     }
 
     public void updatePlayer(float deltaTime, Matrix3x3f viewport) {
@@ -82,12 +68,6 @@ public class PlayerSprite extends Sprite {
                 System.out.println("backtrack");
             } while(this.intersects(bg));
         }
-    }
-
-    public Vector2f getLoc(){
-
-        return new Vector2f( topLeft.subtract(bottomRight) );
-
     }
 
     public boolean intersectsGround(Sprite bg) {
@@ -112,4 +92,57 @@ public class PlayerSprite extends Sprite {
         moveDirection = -0.01f;
     }
 
+    public void addPower ( ){
+
+            power ++;
+
+    }
+
+    public void raiseAngle ( ){
+
+            angle ++;
+
+    }
+
+    public void lowerAngle ( ){
+
+            angle --;
+
+    }
+
+    public void subPower ( ){
+
+            power --;
+
+    }
+
+    public void cycleAmmoLeft(){
+
+        if ( selectedAmmo == 0 ) {
+
+            selectedAmmo = numAmmoTypes - 1;
+
+        }else {
+
+            selectedAmmo --;
+
+        }
+
+    }
+
+    public void cycleAmmoRight(){
+
+        if ( selectedAmmo == numAmmoTypes - 1 ) {
+
+            selectedAmmo = 0;
+
+        }else {
+
+            selectedAmmo ++;
+
+        }
+
+    }
+
 }
+

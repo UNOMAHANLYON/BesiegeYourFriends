@@ -12,36 +12,72 @@ public class Ammo extends Sprite {
     private int type;
     private int direction;
 
-    public Ammo(String path, Vector2f focus, int type, float power, float angle, int direction ) {
+    public Ammo( Vector2f location, float power, Float angle, int player ) {
 
-        super( path, focus );
+        super( "ammospritesheet.png", new Vector2f(-0.175f, 0.175f), new Vector2f(0.175f, -0.175f));
 
-        this.type = type;
-        this.horizontal = (float) Math.cos( angle ) * power;
-        this.vertical = (float) Math.sin( angle ) * power;
-        this.direction = direction;
-        super.gravityApplies = true;
+    //    this.type = type;
+        this.showBounds = true;
+        this.gravityApplies = true;
 
-        outterBounds = new BoundingCircle( focus, 0.5f );
-        innerBounds.add( new BoundingCircle( focus, 0.25f ) );
+        switch(player) {
 
+            case 1:
+                direction = 1;
+                break;
+            case 2:
+                direction = -1;
+                break;
+
+        }
+
+        if ( angle.compareTo(90.0f) > 0 ) {
+
+            angle = 180 - angle;
+            direction *= -1;
+
+        }
+
+        if ( angle.compareTo(90.0f)!= 0 ) {
+
+            this.horizontal = (float) Math.cos(Math.toRadians(angle)) * power;
+            this.vertical = (float) Math.sin(Math.toRadians(angle)) * power;
+
+        } else {
+
+            this.horizontal = 0;
+            this.vertical = power;
+
+        }
+
+        outterBounds = new BoundingCircle( new Vector2f(0,  0), 0.35f );
+        innerBounds.add( new BoundingCircle( new Vector2f(0,  0), 0.15f ) );
+
+        setSubImage(1, 1, 64, 64);
+
+        setLocation(location);
     }
 
     @Override
     public void update( float deltaTime, Matrix3x3f viewport) {
 
-        horizontal = (horizontal + gravity) * deltaTime;
-        super.translate.x += vertical * deltaTime;
-        super.translate.y += horizontal;
 
-        world =  viewport;
-        this.viewport = viewport;
-        updateBoundWorld();
+//        horizontal = (horizontal + gravity) * deltaTime;
 
-        outterBounds.updateWorld(boundMatrix);
-        for (int i=0; i < this.innerBounds.size(); i++) {
-            innerBounds.get(i).updateWorld(boundMatrix);
-        }
+        super.translate.y += vertical * deltaTime;
+        super.translate.x += horizontal * direction * deltaTime;
+        //vertical -= (gravity * deltaTime);
+
+        super.update(deltaTime, viewport);
+
+//        world =  viewport;
+//        this.viewport = viewport;
+//        updateBoundWorld();
+
+//        outterBounds.updateWorld(boundMatrix);
+//        for (int i=0; i < this.innerBounds.size(); i++) {
+//            innerBounds.get(i).updateWorld(boundMatrix);
+//        }
 
     }
 

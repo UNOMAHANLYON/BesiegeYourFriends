@@ -14,24 +14,27 @@ import java.util.ArrayList;
 
 public class Sprite {
 
-    protected final float gravity = -4.0f;
+    protected final float gravity = -9.8f;
 
     public BoundingShapes outterBounds;
     public ArrayList<BoundingShapes> innerBounds;
-    protected BufferedImage spriteImage;
-    private BufferedImage scaledImage;
+    protected BufferedImage scaledImage;
     protected Vector2f topLeft;
     protected Vector2f bottomRight;
     protected Vector2f focus;
-    private String path;
+    protected String path;
+    protected BufferedImage spriteSheet;
+    protected BufferedImage spriteImage;
 
     protected Matrix3x3f world, boundMatrix, viewport;
-    private float rotateRadian;
+    protected float rotateRadian;
     protected Vector2f translate;
-    private Vector2f scale;
+    protected Vector2f scale;
+    protected Vector2f velocity;
     protected boolean showBounds;
     public boolean gravityApplies;
-    protected int health;
+    public int tag;
+    public int health;
 
     public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
 
@@ -43,18 +46,19 @@ public class Sprite {
         try {
 
             //spriteImage = ImageIO.read(getClass().getResource(path));
-            spriteImage = ImageIO.read(new File(path));
+            spriteSheet = ImageIO.read(new File(path));
 
         } catch ( Exception e ) {
 
             e.printStackTrace();
-            spriteImage = null;
+            spriteSheet = null;
 
         }
 
         translate = new Vector2f(0, 0);
         scale = new Vector2f(1, 1);
         rotateRadian = 0;
+        velocity = new Vector2f(0, 0);
         gravityApplies = false;
 
     }
@@ -67,12 +71,12 @@ public class Sprite {
         try {
 
             //spriteImage = ImageIO.read(getClass().getResource(path));
-            spriteImage = ImageIO.read(new File(path));
+            spriteSheet = ImageIO.read(new File(path));
 
         } catch ( Exception e ) {
 
             e.printStackTrace();
-            spriteImage = null;
+            spriteSheet = null;
 
         }
 
@@ -83,8 +87,11 @@ public class Sprite {
 
     }
 
-    public void render( Graphics G ) {
+    public void setSubImage(int col, int row, int width, int height) {
+        spriteImage = spriteSheet.getSubimage((col * 64) - 64, (row * 64) - 64, width, height);
+    }
 
+    public void render( Graphics G ) {
 
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
@@ -113,7 +120,7 @@ public class Sprite {
     private AffineTransform createTransform() {
         Vector2f screen = world.mul(translate);
         AffineTransform transform = AffineTransform.getTranslateInstance(screen.x, screen.y);
-        //transform.scale(scale.x, scale.y);
+        transform.scale(scale.x, scale.y);
         transform.rotate(rotateRadian);
         transform.translate(-scaledImage.getWidth() / 2, -scaledImage.getHeight() / 2);
         return transform;
@@ -166,7 +173,8 @@ public class Sprite {
     }
 
     public void applyGravity(float delta) {
-        translate.y += gravity * delta;
+        velocity.y += gravity * delta;
+        translate.y += velocity.y * delta;
     }
 
     public boolean intersects(Sprite sprite) {
@@ -187,6 +195,13 @@ public class Sprite {
 
     public void setLocationY(float value) {
         translate.y = value;
+    }
+
+
+    public Vector2f getLoc(){
+
+        return translate;
+
     }
 
     public void moveLeft ( float value ) {
