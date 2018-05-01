@@ -29,7 +29,7 @@ public class BYFApp extends SimpleFramework {
         super.initialize();
 
         bg = new Background();
-        player = new PlayerSprite(bg);
+        player = new PlayerSprite(bg, 1);
 
         player.setLocation(new Vector2f(-7f, -3.125f));
     }
