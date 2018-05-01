@@ -10,6 +10,9 @@ public class BoundingCircle implements BoundingShapes {
     private Vector2f focus = new Vector2f();
     private float radius;
 
+    private Vector2f focusW = new Vector2f();
+    private float radiusW;
+
     private Matrix3x3f world;
 
     public BoundingCircle() {
@@ -55,13 +58,13 @@ public class BoundingCircle implements BoundingShapes {
     public boolean intersectRectangle( BoundingBox test) {
 
         float d = 0.0f;
-        Vector2f min = test.getMin();
-        Vector2f max = test.getMax();
+        Vector2f min = test.getMinW();
+        Vector2f max = test.getMaxW();
 
-        if (focus.x < min.x) d += (focus.x - min.x) * (focus.x - min.x);
-        if (focus.x > max.x) d += (focus.x - max.x) * (focus.x - max.x);
-        if (focus.y < min.y) d += (focus.y - min.y) * (focus.y - min.y);
-        if (focus.y > max.y) d += (focus.y - max.y) * (focus.y - max.y);
+        if (focusW.x < min.x) d += (focusW.x - min.x) * (focusW.x - min.x);
+        if (focusW.x > max.x) d += (focusW.x - max.x) * (focusW.x - max.x);
+        if (focusW.y < min.y) d += (focusW.y - min.y) * (focusW.y - min.y);
+        if (focusW.y > max.y) d += (focusW.y - max.y) * (focusW.y - max.y);
 
         return d < radius * radius;
 
@@ -70,7 +73,7 @@ public class BoundingCircle implements BoundingShapes {
     @Override
     public boolean intersectCircle( BoundingCircle test) {
 
-        Vector2f c = test.focus.subtract(this.focus); //Get the vector between centers by subtracting
+        Vector2f c = test.focusW.subtract(this.focusW); //Get the vector between centers by subtracting
         float r = test.radius + this.radius; //Add the radii
         return c.lenSqr() < r * r; //Avoid the sqrt by squaring r
 
@@ -79,7 +82,7 @@ public class BoundingCircle implements BoundingShapes {
     @Override
     public boolean pointInShape( Vector2f test ) {
 
-        Vector2f dist = test.subtract(focus); //Find distance between point and circle
+        Vector2f dist = test.subtract(focusW); //Find distance between point and circle
         return dist.lenSqr() < radius * radius; //Once again avoid using sqrt
 
     }
@@ -94,15 +97,32 @@ public class BoundingCircle implements BoundingShapes {
         }
     }
 
-    public void render( Graphics G, Color color, Matrix3x3f world ) {
+    public void render( Graphics G, Color color, Matrix3x3f viewport ) {
+
+        Vector2f topLeft = new Vector2f(focus.x - radius, focus.y
+                + radius);
+        topLeft = world.mul(topLeft);
+        topLeft = viewport.mul(topLeft);
+        Vector2f bottomRight = new Vector2f(focus.x + radius, focus.y
+                - radius);
+        bottomRight = world.mul(bottomRight);
+        bottomRight = viewport.mul(bottomRight);
+        int circleX = (int) topLeft.x;
+        int circleY = (int) topLeft.y;
+        int circleWidth = (int) (bottomRight.x - topLeft.x);
+        int circleHeight = (int) (bottomRight.y - topLeft.y);
+        
+        Vector2f focusV = viewport.mul(focusW);
 
         G.setColor(color);
-        G.drawOval( (int)focus.x, (int)focus.y, (int)radius, (int)radius );
-
+        //G.drawOval( (int)focusV.x, (int)focusV.y, (int)radius, (int)radius );
+        G.drawOval(circleX, circleY, circleWidth, circleHeight);
     }
 
     public void updateWorld(Matrix3x3f world) {
         this.world = world;
+
+        this.focusW = world.mul(focus);
     }
 
 }
