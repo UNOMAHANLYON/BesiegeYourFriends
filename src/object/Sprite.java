@@ -30,6 +30,7 @@ public class Sprite {
     protected float rotateRadian;
     protected Vector2f translate;
     protected Vector2f scale;
+    protected Vector2f velocity;
     protected boolean showBounds;
     public boolean gravityApplies;
     protected int health;
@@ -56,6 +57,7 @@ public class Sprite {
         translate = new Vector2f(0, 0);
         scale = new Vector2f(1, 1);
         rotateRadian = 0;
+        velocity = new Vector2f(0, 0);
         gravityApplies = false;
 
     }
@@ -171,7 +173,8 @@ public class Sprite {
     }
 
     public void applyGravity(float delta) {
-        translate.y += gravity * delta;
+        velocity.y += gravity * delta;
+        translate.y += velocity.y * delta;
     }
 
     public boolean intersects(Sprite sprite) {

@@ -14,6 +14,8 @@ public class Background extends Sprite {
 
         this.showBounds = true;
 
+        setSubImage(1, 1, 1280, 720);
+
         outterBounds = new BoundingBox(new Vector2f(-9f, -5.5f), new Vector2f(9f, 4.5f));
         groundBound = new BoundingBox (new Vector2f(-8f, -5.5f), new Vector2f(8f, -3.5f)); //bottom
         innerBounds.add(new BoundingBox (new Vector2f(-9f, -4.5f), new Vector2f(-8f, 4.5f))); //left

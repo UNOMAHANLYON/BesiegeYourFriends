@@ -1,5 +1,6 @@
 package BesiegeYourFreinds;
 
+import object.Ammo;
 import object.Background;
 import object.PlayerSprite;
 import util.SimpleFramework;
@@ -14,6 +15,7 @@ public class BYFApp extends SimpleFramework {
     public Background bg;
     public PlayerSprite player1;
     public PlayerSprite player2;
+    public Ammo testAmmo;
 
     public BYFApp() {
         appTitle = "Besiege Your Friends";
@@ -33,6 +35,7 @@ public class BYFApp extends SimpleFramework {
         player1 = new PlayerSprite(bg, 1);
         player2 = new PlayerSprite(bg, 1);
 
+        testAmmo = new Ammo(new Vector2f(-7f, -3.125f), 8f, 45f, 1);
 
         player1.setLocation(new Vector2f(-7f, -3.125f));
     }
@@ -110,6 +113,7 @@ public class BYFApp extends SimpleFramework {
 
         bg.updateBG(delta, getViewportTransform());
         player1.updatePlayer(delta, getViewportTransform());
+        testAmmo.update(delta, getViewportTransform());
 
     }
 
@@ -118,6 +122,7 @@ public class BYFApp extends SimpleFramework {
 
         bg.renderBG(g);
         player1.render(g);
+        testAmmo.render(g);
 
         super.render(g);
     }
