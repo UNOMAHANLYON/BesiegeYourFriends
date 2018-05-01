@@ -14,14 +14,15 @@ import java.util.ArrayList;
 
 public class Sprite {
 
-    private final float gravity = -4.0f;
+    protected final float gravity = -4.0f;
 
     public BoundingShapes outterBounds;
     public ArrayList<BoundingShapes> innerBounds;
     protected BufferedImage spriteImage;
     private BufferedImage scaledImage;
-    private Vector2f topLeft;
-    private Vector2f bottomRight;
+    protected Vector2f topLeft;
+    protected Vector2f bottomRight;
+    protected Vector2f focus;
     private String path;
 
     protected Matrix3x3f world, boundMatrix, viewport;
@@ -30,12 +31,38 @@ public class Sprite {
     private Vector2f scale;
     protected boolean showBounds;
     public boolean gravityApplies;
+    protected int health;
 
     public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
 
         this.path = path;
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+        this.innerBounds = new ArrayList<BoundingShapes>();
+        health = 100;
+        try {
+
+            //spriteImage = ImageIO.read(getClass().getResource(path));
+            spriteImage = ImageIO.read(new File(path));
+
+        } catch ( Exception e ) {
+
+            e.printStackTrace();
+            spriteImage = null;
+
+        }
+
+        translate = new Vector2f(0, 0);
+        scale = new Vector2f(1, 1);
+        rotateRadian = 0;
+        gravityApplies = false;
+
+    }
+
+    public Sprite( String path, Vector2f focus ){
+
+        this.path = path;
+        this.focus = focus;
         this.innerBounds = new ArrayList<BoundingShapes>();
         try {
 
