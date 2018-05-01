@@ -12,18 +12,28 @@ public class Ammo extends Sprite {
     private int type;
     private int direction;
 
-    public Ammo(String path, Vector2f focus, int type, float power, float angle, int direction ) {
+    public Ammo( Vector2f focus, float power, float angle, int player ) {
 
-        super( path, focus );
+        super( "catapultspritesheet.png", focus );
 
-        this.type = type;
+    //    this.type = type;
         this.horizontal = (float) Math.cos( angle ) * power;
         this.vertical = (float) Math.sin( angle ) * power;
-        this.direction = direction;
-        super.gravityApplies = true;
+        switch(player) {
+
+            case 1:
+                direction = 1;
+                break;
+            case 2:
+                direction = -1;
+                break;
+
+        }
 
         outterBounds = new BoundingCircle( focus, 0.5f );
         innerBounds.add( new BoundingCircle( focus, 0.25f ) );
+
+        setSubImage(1, 8, 64, 64);
 
     }
 
