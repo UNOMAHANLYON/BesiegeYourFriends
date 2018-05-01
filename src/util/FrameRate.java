@@ -19,7 +19,7 @@ public class FrameRate {
     public void calculate() { //Should be called on once every time a frame is rendered
         long current = System.currentTimeMillis(); //Get the current time
         delta += current - lastTime; //Increase time since last call
-        lastTime = current; //Update â€œlast timeâ€
+        lastTime = current; //Update “last time”
         frameCount++; //One more frame has been rendered
         if( delta > 1000 ) { //Check if full second has passed
             delta -= 1000; //Remove a second from timer

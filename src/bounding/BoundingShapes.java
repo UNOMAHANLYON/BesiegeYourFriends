@@ -12,8 +12,6 @@ public interface BoundingShapes {
 
     public boolean pointInShape( Vector2f test );
 
-    public void render ( Graphics G, Color color );
-
-    public boolean intersects (BoundingShapes bound);
+    public void render ( Graphics G );
 
 }

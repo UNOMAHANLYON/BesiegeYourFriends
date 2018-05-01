@@ -88,19 +88,9 @@ public class BoundingBox implements BoundingShapes {
 
     }
 
-    public boolean intersects(BoundingShapes bound) {
-        if (bound instanceof BoundingBox) {
-            return this.intersectRectangle((BoundingBox) bound);
-        } else if (bound instanceof BoundingCircle) {
-            return this.intersectCircle((BoundingCircle) bound);
-        } else {
-            return false;
-        }
-    }
+    public void render( Graphics G ) {
 
-    public void render( Graphics G, Color color ) {
-        G.setColor(color);
-        G.drawRect((int)min.x, (int)max.y, (int)(max.x - min.x), (int)(max.y - min.y));
+        G.drawRect( (int)min.x, (int)min.y, (int)max.x, (int)max.y );
 
     }
 

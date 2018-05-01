@@ -16,38 +16,26 @@ public class Sprite {
 
     private final float gravity = 4.0f;
 
-    public BoundingShapes outterBounds;
-    public ArrayList<BoundingShapes> innerBounds;
+    private BoundingShapes outterBounds;
+    protected ArrayList<BoundingShapes> innerBounds;
     protected BufferedImage spriteImage;
     private BufferedImage scaledImage;
     private Vector2f topLeft;
     private Vector2f bottomRight;
     private String path;
 
-    protected Matrix3x3f world;
+    private Matrix3x3f world;
     private float rotateRadian;
     private Vector2f translate;
     private Vector2f scale;
-    protected boolean showBounds;
+    private boolean showBounds;
 
-    public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
+    public Sprite( BufferedImage spriteImage, Vector2f topLeft, Vector2f bottomRight ){
 
-        this.path = path;
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
         this.innerBounds = new ArrayList<BoundingShapes>();
-        try {
-
-            //spriteImage = ImageIO.read(getClass().getResource(path));
-            spriteImage = ImageIO.read(new File(path));
-
-        } catch ( Exception e ) {
-
-            e.printStackTrace();
-            spriteImage = null;
-
-        }
-
+        this.spriteImage = spriteImage;
         translate = new Vector2f(0, 0);
         scale = new Vector2f(1, 1);
         rotateRadian = 0;
@@ -55,6 +43,11 @@ public class Sprite {
     }
 
     public void render( Graphics G ) {
+
+        if ( showBounds ) {
+            showBounds(G);
+        }
+
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
             scaleImage(world);
@@ -62,23 +55,17 @@ public class Sprite {
             g2d.drawImage(scaledImage, createTransform(), null);
         }
 
-        if ( showBounds ) {
-            renderBounds(G);
-        }
-
     }
 
-    public void renderBounds(Graphics G) {
-        System.out.println("rendering bounds...");
-        outterBounds.render(G, Color.BLACK);
+    public void showBounds(Graphics G) {
 
         for (int i=0; i<innerBounds.size(); i++) {
-            innerBounds.get(i).render(G, Color.GREEN);
+            innerBounds.get(i).render(G);
         }
 
     }
 
-    private AffineTransform createTransform() {
+   public AffineTransform createTransform() {
         Vector2f screen = world.mul(translate);
         AffineTransform transform = AffineTransform.getTranslateInstance(screen.x, screen.y);
         //transform.scale(scale.x, scale.y);
@@ -104,22 +91,12 @@ public class Sprite {
 //        translate.translate( tx, ty );
 //        this.rotateRadian += rotate;
 
+
+
     }
 
     public void applyGravity(float delta) {
         translate.y -= gravity * delta;
-    }
-
-    public boolean intersects(Sprite sprite) {
-        if (this.outterBounds.intersects(sprite.outterBounds)) {
-            for(int i=0; i < this.innerBounds.size(); i++) {
-                for (int j=0; j < sprite.innerBounds.size(); j++) {
-                    if (this.innerBounds.get(i).intersects(sprite.innerBounds.get(j)))
-                        return true;
-                }
-            }
-        }
-        return false;
     }
 
 }
