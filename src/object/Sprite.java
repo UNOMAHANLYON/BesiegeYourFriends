@@ -33,8 +33,8 @@ public class Sprite {
     protected Vector2f velocity;
     protected boolean showBounds;
     public boolean gravityApplies;
-    protected int health;
     public int tag;
+    public int health;
 
     public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
 
@@ -92,7 +92,6 @@ public class Sprite {
     }
 
     public void render( Graphics G ) {
-
 
         if (spriteImage != null) {
             //G.drawImage(spriteImage, (int) translate.x, (int) translate.y, null);
