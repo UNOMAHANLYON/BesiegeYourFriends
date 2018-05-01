@@ -14,10 +14,12 @@ public class PlayerSprite extends Sprite {
     private float moveDirection = 0f;
     public float power;
     public float angle;
-    private final float maxPower = 100;
+    private final float maxPower = 15;
     private final float maxAngle = 180;
     private int player;
     private int shotDirection;
+    private int selectedAmmo;
+    private final int numAmmoTypes = 3;
 
     public PlayerSprite(Background bg, int player ) {
 
@@ -27,8 +29,9 @@ public class PlayerSprite extends Sprite {
         this.gravityApplies = true;
         this.bg = bg;
         this.player = player;
-        power = 50;
-        angle = 0;
+        power = 15;
+        angle = 45;
+        selectedAmmo = 0;
 
         switch ( player ) {
 
@@ -67,12 +70,6 @@ public class PlayerSprite extends Sprite {
         }
     }
 
-    public Vector2f getLoc(){
-
-        return new Vector2f( topLeft.subtract(bottomRight) );
-
-    }
-
     public boolean intersectsGround(Sprite bg) {
         for(int i=0; i < this.innerBounds.size(); i++) {
             if (this.innerBounds.get(i).intersects(this.bg.groundBound))
@@ -95,57 +92,53 @@ public class PlayerSprite extends Sprite {
         moveDirection = -0.01f;
     }
 
-    public void addPower ( boolean fast ){
-
-        if ( fast ) {
-
-            power += 5;
-
-        } else {
+    public void addPower ( ){
 
             power ++;
 
-        }
-
     }
 
-    public void raiseAngle ( boolean fast ){
-
-        if ( fast ) {
-
-            angle += 5;
-
-        } else {
+    public void raiseAngle ( ){
 
             angle ++;
 
-        }
-
     }
 
-    public void lowerAngle ( boolean fast ){
-
-        if ( fast ) {
-
-            angle -= 5;
-
-        } else {
+    public void lowerAngle ( ){
 
             angle --;
 
+    }
+
+    public void subPower ( ){
+
+            power --;
+
+    }
+
+    public void cycleAmmoLeft(){
+
+        if ( selectedAmmo == 0 ) {
+
+            selectedAmmo = numAmmoTypes - 1;
+
+        }else {
+
+            selectedAmmo --;
+
         }
 
     }
 
-    public void subPower ( boolean fast ){
+    public void cycleAmmoRight(){
 
-        if ( fast ) {
+        if ( selectedAmmo == numAmmoTypes - 1 ) {
 
-            power -= 5;
+            selectedAmmo = 0;
 
-        } else {
+        }else {
 
-            power --;
+            selectedAmmo ++;
 
         }
 

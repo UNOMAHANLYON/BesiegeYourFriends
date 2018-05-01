@@ -33,6 +33,7 @@ public class Sprite {
     protected Vector2f velocity;
     protected boolean showBounds;
     public boolean gravityApplies;
+    public int tag;
     public int health;
 
     public Sprite( String path, Vector2f topLeft, Vector2f bottomRight ){
@@ -119,7 +120,7 @@ public class Sprite {
     private AffineTransform createTransform() {
         Vector2f screen = world.mul(translate);
         AffineTransform transform = AffineTransform.getTranslateInstance(screen.x, screen.y);
-        //transform.scale(scale.x, scale.y);
+        transform.scale(scale.x, scale.y);
         transform.rotate(rotateRadian);
         transform.translate(-scaledImage.getWidth() / 2, -scaledImage.getHeight() / 2);
         return transform;
@@ -194,6 +195,13 @@ public class Sprite {
 
     public void setLocationY(float value) {
         translate.y = value;
+    }
+
+
+    public Vector2f getLoc(){
+
+        return translate;
+
     }
 
     public void moveLeft ( float value ) {
