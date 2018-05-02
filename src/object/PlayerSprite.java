@@ -19,6 +19,7 @@ public class PlayerSprite extends Sprite {
     private int shotDirection;
     private int selectedAmmo;
     private final int numAmmoTypes = 3;
+    public boolean dead;
 
     public PlayerSprite(Background bg, int player ) {
 
@@ -31,6 +32,7 @@ public class PlayerSprite extends Sprite {
         power = 15;
         angle = 45;
         selectedAmmo = 0;
+        dead = false;
 
         switch ( player ) {
 
