@@ -1,9 +1,6 @@
 package BesiegeYourFreinds;
 
-import object.Ammo;
-import object.Background;
-import object.PlayerSprite;
-import object.PlayerStats;
+import object.*;
 import util.SimpleFramework;
 import util.SoundPlayer;
 import util.Vector2f;
@@ -17,6 +14,7 @@ public class BYFApp extends SimpleFramework {
     public boolean show;
     public Background bg;
     public PlayerStats playerStats;
+    public MenuManager menuManager;
     public PlayerSprite player1;
     public PlayerSprite player2;
     public PlayerSprite currentPlayer;
@@ -43,6 +41,7 @@ public class BYFApp extends SimpleFramework {
         isMenu = true;
         soundPlayer = new SoundPlayer();
         playerStats = new PlayerStats("PlayerStats.png");
+        menuManager = new MenuManager();
 
 
         soundPlayer.PlayBG();
@@ -240,6 +239,8 @@ public class BYFApp extends SimpleFramework {
 
 
             }
+        } else {
+            menuManager.update(delta, getViewportTransform());
         }
 
     }
@@ -259,15 +260,23 @@ public class BYFApp extends SimpleFramework {
                 testAmmo.render(g);
 
         }
+
         if (winner != 0) {
-            g.setColor(Color.WHITE);
-            g.drawString("Player " + winner + " has won this round!", appWidth / 2, appHeight / 2);
+            menuManager.setWinner(winner);
             soundPlayer.StopSoundLoop();
             isMenu = true;
         }
+
+//        if (winner != 0) {
+//            g.setColor(Color.WHITE);
+//            g.drawString("Player " + winner + " has won this round!", appWidth / 2, appHeight / 2);
+//            soundPlayer.StopSoundLoop();
+//            isMenu = true;
+//        }
         if (isMenu) {
-            g.setColor(Color.WHITE);
-            g.drawString("Press 'A' to start new game on Ice Castle or press 'D' to play in the Wild West!", appWidth / 2, appHeight / 2 + 20);
+            menuManager.render(g);
+//            g.setColor(Color.WHITE);
+//            g.drawString("Press 'A' to start new game on Ice Castle or press 'D' to play in the Wild West!", appWidth / 2, appHeight / 2 + 20);
             soundPlayer.StopSoundLoop();
             isMenu = true;
         }
