@@ -316,7 +316,7 @@ public class BYFApp extends SimpleFramework {
         }
 
         g.drawString("Angle: " + (int) player1.angle, (int) p1AngleDisplay.x, (int) p1AngleDisplay.y);
-        g.drawString("Power: " + player1.power, (int) p1PowerDisplay.x, (int) p1PowerDisplay.y);
+        g.drawString("Power: " + (int) player1.power, (int) p1PowerDisplay.x, (int) p1PowerDisplay.y);
 
         if(player2.health >= 0) {
             g.drawString("Player 2 Health: " + player2.health  +"%", (int) p2HealthDisplay.x, (int) p2HealthDisplay.y);
