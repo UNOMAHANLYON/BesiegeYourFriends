@@ -18,7 +18,7 @@ public class Ammo extends Sprite {
         super( "ammospritesheet.png", new Vector2f(-0.175f, 0.175f), new Vector2f(0.175f, -0.175f));
 
     //    this.type = type;
-        this.showBounds = true;
+        this.showBounds = false;
         this.gravityApplies = true;
         this.tag = player;
 

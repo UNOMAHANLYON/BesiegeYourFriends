@@ -25,7 +25,7 @@ public class PlayerSprite extends Sprite {
 
         super("catapultspritesheet.png", new Vector2f(-0.375f, 0.375f), new Vector2f(0.375f, -0.375f));
 
-        this.showBounds = true;
+        this.showBounds = false;
         this.gravityApplies = true;
         this.bg = bg;
         this.tag = player;
