@@ -53,7 +53,7 @@ public class BYFApp extends SimpleFramework {
 
         if(isMenu){
             String path;
-            if (keyboard.keyDown(KeyEvent.VK_A)) {
+            if (keyboard.keyDown(KeyEvent.VK_D)) {
                 path = "west_bg.jpg";
                 bg = new Background(path);
                 player1 = new PlayerSprite(bg, 1);
@@ -67,7 +67,7 @@ public class BYFApp extends SimpleFramework {
                 isMenu = false;
             }
 
-            if (keyboard.keyDown(KeyEvent.VK_B)) {
+            if (keyboard.keyDown(KeyEvent.VK_A)) {
                 path = "snow_bg.jpg";
                 bg = new Background(path);
                 player1 = new PlayerSprite(bg, 1);
@@ -245,17 +245,23 @@ public class BYFApp extends SimpleFramework {
 
             renderPlayerStats(g);
 
-            if (winner != 0) {
-
-                g.drawString("Player " + winner + " has won this round!", appWidth / 2, appHeight / 2);
-                soundPlayer.StopSoundLoop();
-            }
-
             player1.render(g);
             player2.render(g);
             if (testAmmo != null)
                 testAmmo.render(g);
 
+        }
+        if (winner != 0) {
+            g.setColor(Color.WHITE);
+            g.drawString("Player " + winner + " has won this round!", appWidth / 2, appHeight / 2);
+            soundPlayer.StopSoundLoop();
+            isMenu = true;
+        }
+        if (isMenu) {
+            g.setColor(Color.WHITE);
+            g.drawString("Press 'A' to start new game on Ice Castle or press 'D' to play in the Wild West!", appWidth / 2, appHeight / 2 + 20);
+            soundPlayer.StopSoundLoop();
+            isMenu = true;
         }
         super.render(g);
     }
@@ -292,7 +298,7 @@ public class BYFApp extends SimpleFramework {
         Vector2f p2AngleDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.5f));
         Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.2f));
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.GRAY);
 
         if(player1.health >= 0) {
             g.drawString("Player 1 Health: " + player1.health  +"%", (int) p1HealthDisplay.x, (int) p1HealthDisplay.y);
