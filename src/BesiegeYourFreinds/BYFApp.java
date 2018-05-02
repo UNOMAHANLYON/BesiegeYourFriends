@@ -4,6 +4,7 @@ import object.Ammo;
 import object.Background;
 import object.PlayerSprite;
 import util.SimpleFramework;
+import util.SoundPlayer;
 import util.Vector2f;
 
 import java.awt.*;
@@ -21,6 +22,7 @@ public class BYFApp extends SimpleFramework {
     public int winner;
 
     private boolean disableControls;
+    private SoundPlayer soundPlayer;
 
     public BYFApp() {
         appTitle = "Besiege Your Friends";
@@ -35,7 +37,7 @@ public class BYFApp extends SimpleFramework {
     @Override
     protected void initialize() {
         super.initialize();
-
+        soundPlayer = new SoundPlayer();
         bg = new Background();
         player1 = new PlayerSprite(bg, 1);
         player2 = new PlayerSprite(bg, 2);
@@ -43,6 +45,8 @@ public class BYFApp extends SimpleFramework {
         currentPlayer = player1;
         disableControls = false;
         winner = 0;
+
+        soundPlayer.PlayBG();
 
         //testAmmo = new Ammo(new Vector2f(-7f, -3.125f), 15f, 45f, 1);
 
@@ -116,6 +120,8 @@ public class BYFApp extends SimpleFramework {
             if (keyboard.keyDownOnce(KeyEvent.VK_SPACE)) {
 
                 disableControls = true;
+                soundPlayer.StopSoundLoop();
+                soundPlayer.PlayCatapultLaunch();
                 if (turn == 1) {
 
                     testAmmo = new Ammo(new Vector2f(player1.getLoc()), player1.power, player1.angle, 1);
@@ -126,6 +132,18 @@ public class BYFApp extends SimpleFramework {
                     testAmmo = new Ammo(new Vector2f(player2.getLoc()), player2.power, player2.angle, 2);
                     turn = 1;
 
+                }
+
+            }
+
+            // Sound Management
+            if (keyboard.keyDownOnce( KeyEvent.VK_D) || keyboard.keyDownOnce( KeyEvent.VK_A)) {
+                soundPlayer.PlayRollingCart();
+            }
+
+            if ( !keyboard.keyDown( KeyEvent.VK_D ) && !keyboard.keyDown( KeyEvent.VK_A ) ) {
+                if(!disableControls){
+                    soundPlayer.StopSoundLoop();
                 }
 
             }
@@ -154,8 +172,9 @@ public class BYFApp extends SimpleFramework {
                         winner = 2;
 
                     } else {
-
-                        disableControls = false;
+                    disableControls = false;
+                    soundPlayer.StopSoundLoop();
+                    //soundPlayer.PlayDamage();
 
                     }
 
@@ -172,8 +191,9 @@ public class BYFApp extends SimpleFramework {
                         winner = 1;
 
                     } else {
-
-                        disableControls = false;
+                    disableControls = false;
+                    soundPlayer.StopSoundLoop();
+                    //soundPlayer.PlayDamage();
 
                     }
 
@@ -183,6 +203,7 @@ public class BYFApp extends SimpleFramework {
 
                 testAmmo = null;
                 disableControls = false;
+                soundPlayer.StopSoundLoop();
 
             }
 
