@@ -51,81 +51,82 @@ public class BYFApp extends SimpleFramework {
     protected void processInput(float delta) {
         super.processInput(delta);
 
-        if ( turn == 1 ) {
+        if ( !disableControls ) {
+            if (turn == 1) {
 
-            currentPlayer = player1;
+                currentPlayer = player1;
 
-        } else {
+            } else {
 
-            currentPlayer = player2;
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_D ) ) {
-
-            currentPlayer.moveRight( 0.25f * delta );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_A ) ) {
-
-            currentPlayer.moveLeft( 0.25f * delta);
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_W ) ) {
-
-            currentPlayer.raiseAngle( delta );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_S ) ) {
-
-            currentPlayer.lowerAngle( delta );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_Q ) ) {
-
-            currentPlayer.subPower( delta );
-
-        }
-
-        if ( keyboard.keyDown( KeyEvent.VK_E ) ) {
-
-            currentPlayer.addPower( delta );
-
-        }
-
-        if ( keyboard.keyDownOnce( KeyEvent.VK_X ) ) {
-
-            currentPlayer.cycleAmmoLeft();
-
-        }
-
-        if ( keyboard.keyDownOnce( KeyEvent.VK_C ) ) {
-
-            currentPlayer.cycleAmmoRight();
-
-        }
-
-        if ( keyboard.keyDownOnce( KeyEvent.VK_SPACE ) ) {
-
-            if ( turn == 1 ) {
-
-                testAmmo = new Ammo( new Vector2f(player1.getLoc()), player1.power, player1.angle, 1 );
-                turn = 2;
-
-            }else {
-
-                testAmmo = new Ammo( new Vector2f(player2.getLoc()), player2.power, player2.angle, 2 );
-                turn = 1;
+                currentPlayer = player2;
 
             }
 
+            if (keyboard.keyDown(KeyEvent.VK_D)) {
+
+                currentPlayer.moveRight(0.25f * delta);
+
+            }
+
+            if (keyboard.keyDown(KeyEvent.VK_A)) {
+
+                currentPlayer.moveLeft(0.25f * delta);
+
+            }
+
+            if (keyboard.keyDown(KeyEvent.VK_W)) {
+
+                currentPlayer.raiseAngle(delta);
+
+            }
+
+            if (keyboard.keyDown(KeyEvent.VK_S)) {
+
+                currentPlayer.lowerAngle(delta);
+
+            }
+
+            if (keyboard.keyDown(KeyEvent.VK_Q)) {
+
+                currentPlayer.subPower(delta);
+
+            }
+
+            if (keyboard.keyDown(KeyEvent.VK_E)) {
+
+                currentPlayer.addPower(delta);
+
+            }
+
+            if (keyboard.keyDownOnce(KeyEvent.VK_X)) {
+
+                currentPlayer.cycleAmmoLeft();
+
+            }
+
+            if (keyboard.keyDownOnce(KeyEvent.VK_C)) {
+
+                currentPlayer.cycleAmmoRight();
+
+            }
+
+            if (keyboard.keyDownOnce(KeyEvent.VK_SPACE)) {
+
+                disableControls = true;
+                if (turn == 1) {
+
+                    testAmmo = new Ammo(new Vector2f(player1.getLoc()), player1.power, player1.angle, 1);
+                    turn = 2;
+
+                } else {
+
+                    testAmmo = new Ammo(new Vector2f(player2.getLoc()), player2.power, player2.angle, 2);
+                    turn = 1;
+
+                }
+
+            }
         }
-
-
 
     }
 
@@ -135,8 +136,41 @@ public class BYFApp extends SimpleFramework {
         bg.updateBG(delta, getViewportTransform());
         player1.updatePlayer(delta, getViewportTransform());
         player2.updatePlayer(delta, getViewportTransform());
-        if (testAmmo != null )
+        if (testAmmo != null ) {
+
             testAmmo.update(delta, getViewportTransform());
+            if ( testAmmo.checkCollisions( bg ) ){
+
+
+
+            }
+
+            if ( testAmmo.checkCollisions( player1 ) ){
+
+                if ( testAmmo.tag != player1.tag ) {
+
+                    player1.dealDamage( testAmmo.damage );
+                    testAmmo = null;
+                    disableControls = false;
+
+                }
+
+            }
+
+            if ( testAmmo.checkCollisions( player2 ) ) {
+
+                if ( testAmmo.tag != player2.tag ) {
+
+                    player2.dealDamage( testAmmo.damage );
+                    testAmmo = null;
+                    disableControls = false;
+
+                }
+
+            }
+
+
+        }
 
     }
 

@@ -168,5 +168,11 @@ public class PlayerSprite extends Sprite {
 
     }
 
+    public void dealDamage( int damage ) {
+
+        health -= damage;
+
+    }
+
 }
 
