@@ -9,8 +9,8 @@ import java.awt.*;
 public class Background extends Sprite {
     public BoundingShapes groundBound;
 
-    public Background() {
-        super("snow_bg.jpg", new Vector2f(-16.0f / 2.0f, 9.0f / 2.0f), new Vector2f(16.0f / 2.0f, -9.0f / 2.0f));
+    public Background(String path) {
+        super(path, new Vector2f(-16.0f / 2.0f, 9.0f / 2.0f), new Vector2f(16.0f / 2.0f, -9.0f / 2.0f));
 
         this.showBounds = true;
 
