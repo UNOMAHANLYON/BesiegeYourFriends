@@ -35,19 +35,21 @@ public class Ammo extends Sprite {
 
         damage = 50;
 
+        //set angle and direction for shots with greater than 90 degrees
         if ( angle.compareTo(90.0f) > 0 ) {
 
             angle = 180 - angle;
-            direction *= -1;
+            direction *= -1; //used to send the shot in the proper direction
 
         }
 
+        //set horizontal and vertical power components
         if ( angle.compareTo(90.0f)!= 0 ) {
 
             this.horizontal = (float) Math.cos(Math.toRadians(angle)) * power;
             this.vertical = (float) Math.sin(Math.toRadians(angle)) * power;
 
-        } else {
+        } else { //if shot is 90 degrees set horizontal and vertical
 
             this.horizontal = 0;
             this.vertical = power;
@@ -85,26 +87,5 @@ public class Ammo extends Sprite {
 
     }
 
-    public boolean checkCollisions ( Sprite test ){
-
-        for(int i=0; i < this.innerBounds.size(); i++) {
-            if (this.innerBounds.get(i).intersects( test.outterBounds )) {
-
-                for( int j =0; j < test.innerBounds.size(); j++ ){
-
-                    if ( this.innerBounds.get(i).intersects( test.innerBounds.get(j) ) ){
-
-                        return true;
-
-                    }
-
-                }
-
-            }
-        }
-
-        return false;
-
-    }
 
 }

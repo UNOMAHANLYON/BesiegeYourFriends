@@ -87,6 +87,8 @@ public class BYFApp extends SimpleFramework {
         }
 
         if ( !disableControls && !isMenu) {
+
+            //changes the currently controlled player catapult
             if (turn == 1) {
 
                 currentPlayer = player1;
@@ -97,6 +99,8 @@ public class BYFApp extends SimpleFramework {
 
             }
 
+
+            //move player controlled catapult right or left
             if (keyboard.keyDown(KeyEvent.VK_D)) {
 
                 currentPlayer.moveRight(0.25f * delta);
@@ -109,6 +113,7 @@ public class BYFApp extends SimpleFramework {
 
             }
 
+            //raise and lower the shot angle for the currently controlled catapult
             if (keyboard.keyDown(KeyEvent.VK_W)) {
 
                 currentPlayer.raiseAngle(delta);
@@ -121,6 +126,7 @@ public class BYFApp extends SimpleFramework {
 
             }
 
+            //increase and decrease shot power for the currently controlled catapult
             if (keyboard.keyDown(KeyEvent.VK_Q)) {
 
                 currentPlayer.subPower(delta);
@@ -133,6 +139,7 @@ public class BYFApp extends SimpleFramework {
 
             }
 
+            //cycles the current ammo type to the left and right (not currently used)
             if (keyboard.keyDownOnce(KeyEvent.VK_X)) {
 
                 currentPlayer.cycleAmmoLeft();
@@ -145,6 +152,8 @@ public class BYFApp extends SimpleFramework {
 
             }
 
+            //creates a new shot at the currently controlled catapult's position and adds the current shot power and
+            //angle to it. Also disables controls until the shot lands and is the end of the current players turn.
             if (keyboard.keyDownOnce(KeyEvent.VK_SPACE)) {
 
                 disableControls = true;
@@ -340,3 +349,5 @@ public class BYFApp extends SimpleFramework {
     }
 
 }
+
+
