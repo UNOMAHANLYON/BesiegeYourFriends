@@ -139,13 +139,7 @@ public class BYFApp extends SimpleFramework {
         if (testAmmo != null ) {
 
             testAmmo.update(delta, getViewportTransform());
-            if ( testAmmo.checkCollisions( bg ) ){
-
-
-
-            }
-
-            if ( testAmmo.checkCollisions( player1 ) ){
+            if ( testAmmo.intersects( player1 ) ){
 
                 if ( testAmmo.tag != player1.tag ) {
 
@@ -155,9 +149,7 @@ public class BYFApp extends SimpleFramework {
 
                 }
 
-            }
-
-            if ( testAmmo.checkCollisions( player2 ) ) {
+            } else if ( testAmmo.intersects( player2 ) ) {
 
                 if ( testAmmo.tag != player2.tag ) {
 
@@ -166,6 +158,11 @@ public class BYFApp extends SimpleFramework {
                     disableControls = false;
 
                 }
+
+            } else if ( testAmmo.intersects( bg ) || testAmmo.intersectsGround(bg) ){
+
+                testAmmo = null;
+                disableControls = false;
 
             }
 
@@ -195,7 +192,7 @@ public class BYFApp extends SimpleFramework {
 
         g.setColor(Color.BLACK);
         g.drawString("Angle: " + (int) player1.angle, 5, 60 );
-        g.drawString("Power: " + (int) player1.power, 5, 75 );
+        g.drawString("Power: " + player1.power, 5, 75 );
 
         g.setColor(Color.GREEN);
         g.fillRect(945, 5, player2.health * 2, 25);

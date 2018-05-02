@@ -20,7 +20,7 @@ public class Ammo extends Sprite {
     //    this.type = type;
         this.showBounds = true;
         this.gravityApplies = true;
-        super.tag = player;
+        this.tag = player;
 
         switch(player) {
 

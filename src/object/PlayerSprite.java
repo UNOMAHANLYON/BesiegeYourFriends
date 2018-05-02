@@ -16,7 +16,6 @@ public class PlayerSprite extends Sprite {
     public float angle;
     private final float maxPower = 20;
     private final float maxAngle = 180;
-    private int player;
     private int shotDirection;
     private int selectedAmmo;
     private final int numAmmoTypes = 3;
@@ -28,7 +27,7 @@ public class PlayerSprite extends Sprite {
         this.showBounds = true;
         this.gravityApplies = true;
         this.bg = bg;
-        this.player = player;
+        this.tag = player;
         power = 15;
         angle = 45;
         selectedAmmo = 0;
@@ -37,26 +36,20 @@ public class PlayerSprite extends Sprite {
 
             case 1:
                 shotDirection = 1;
-                break;
-            case 2:
-                shotDirection = -1;
-                break;
-
-        }
-
-        switch ( player ) {
-            case 1:
                 setSubImage(1, 1, 64, 64);
                 break;
             case 2:
+                shotDirection = -1;
                 setSubImage(1, 7, 64, 64);
                 break;
+
         }
 
         scale = new Vector2f( shotDirection, 1 );
         outterBounds = new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f));
         innerBounds.add(new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f)));
 
+        System.out.println("test");
     }
 
     public void updatePlayer(float deltaTime, Matrix3x3f viewport) {
@@ -79,13 +72,7 @@ public class PlayerSprite extends Sprite {
         }
     }
 
-    public boolean intersectsGround(Sprite bg) {
-        for(int i=0; i < this.innerBounds.size(); i++) {
-            if (this.innerBounds.get(i).intersects(this.bg.groundBound))
-                return true;
-        }
-        return false;
-    }
+
 
     @Override
     public void moveLeft ( float value ) {
