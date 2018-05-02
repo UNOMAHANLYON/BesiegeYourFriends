@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 
 public class BYFApp extends SimpleFramework {
 
+    public boolean isMenu;
     public boolean show;
     public Background bg;
     public PlayerSprite player1;
@@ -37,28 +38,51 @@ public class BYFApp extends SimpleFramework {
     @Override
     protected void initialize() {
         super.initialize();
+        isMenu = true;
         soundPlayer = new SoundPlayer();
-        bg = new Background();
-        player1 = new PlayerSprite(bg, 1);
-        player2 = new PlayerSprite(bg, 2);
-        turn = 1;
-        currentPlayer = player1;
-        disableControls = false;
-        winner = 0;
+
 
         soundPlayer.PlayBG();
 
         //testAmmo = new Ammo(new Vector2f(-7f, -3.125f), 15f, 45f, 1);
-
-        player1.setLocation(new Vector2f(-7f, -3.125f));
-        player2.setLocation(new Vector2f ( 7f, -3.125f ));
     }
 
     @Override
     protected void processInput(float delta) {
         super.processInput(delta);
 
-        if ( !disableControls ) {
+        if(isMenu){
+            String path;
+            if (keyboard.keyDown(KeyEvent.VK_A)) {
+                path = "west_bg.jpg";
+                bg = new Background(path);
+                player1 = new PlayerSprite(bg, 1);
+                player2 = new PlayerSprite(bg, 2);
+                turn = 1;
+                currentPlayer = player1;
+                winner = 0;
+
+                player1.setLocation(new Vector2f(-7f, -3.125f));
+                player2.setLocation(new Vector2f ( 7f, -3.125f ));
+                isMenu = false;
+            }
+
+            if (keyboard.keyDown(KeyEvent.VK_B)) {
+                path = "snow_bg.jpg";
+                bg = new Background(path);
+                player1 = new PlayerSprite(bg, 1);
+                player2 = new PlayerSprite(bg, 2);
+                turn = 1;
+                currentPlayer = player1;
+                winner = 0;
+
+                player1.setLocation(new Vector2f(-7f, -3.125f));
+                player2.setLocation(new Vector2f ( 7f, -3.125f ));
+                isMenu = false;
+            }
+        }
+
+        if ( !disableControls && !isMenu) {
             if (turn == 1) {
 
                 currentPlayer = player1;
@@ -138,6 +162,7 @@ public class BYFApp extends SimpleFramework {
 
             // Sound Management
             if (keyboard.keyDownOnce( KeyEvent.VK_D) || keyboard.keyDownOnce( KeyEvent.VK_A)) {
+                soundPlayer.StopSoundLoop();
                 soundPlayer.PlayRollingCart();
             }
 
@@ -153,82 +178,85 @@ public class BYFApp extends SimpleFramework {
 
     @Override
     protected void updateObjects(float delta) {
+        if(!isMenu) {
+            bg.updateBG(delta, getViewportTransform());
+            player1.updatePlayer(delta, getViewportTransform());
+            player2.updatePlayer(delta, getViewportTransform());
+            if (testAmmo != null) {
 
-        bg.updateBG(delta, getViewportTransform());
-        player1.updatePlayer(delta, getViewportTransform());
-        player2.updatePlayer(delta, getViewportTransform());
-        if (testAmmo != null ) {
+                testAmmo.update(delta, getViewportTransform());
+                if (testAmmo.intersects(player1)) {
 
-            testAmmo.update(delta, getViewportTransform());
-            if ( testAmmo.intersects( player1 ) ){
+                    if (testAmmo.tag != player1.tag) {
 
-                if ( testAmmo.tag != player1.tag ) {
+                        player1.dealDamage(testAmmo.damage);
+                        testAmmo = null;
 
-                    player1.dealDamage( testAmmo.damage );
-                    testAmmo = null;
+                        if (player1.health <= 0) {
 
-                    if ( player1.health <= 0 ) {
+                            winner = 2;
 
-                        winner = 2;
+                        } else {
+                            disableControls = false;
+                            soundPlayer.StopSoundLoop();
+                            //soundPlayer.PlayDamage();
 
-                    } else {
-                    disableControls = false;
-                    soundPlayer.StopSoundLoop();
-                    //soundPlayer.PlayDamage();
-
-                    }
-
-                }
-
-            } else if ( testAmmo.intersects( player2 ) ) {
-
-                if ( testAmmo.tag != player2.tag ) {
-
-                    player2.dealDamage( testAmmo.damage );
-                    testAmmo = null;
-                    if ( player2.health <= 0 ) {
-
-                        winner = 1;
-
-                    } else {
-                    disableControls = false;
-                    soundPlayer.StopSoundLoop();
-                    //soundPlayer.PlayDamage();
+                        }
 
                     }
 
+                } else if (testAmmo.intersects(player2)) {
+
+                    if (testAmmo.tag != player2.tag) {
+
+                        player2.dealDamage(testAmmo.damage);
+                        testAmmo = null;
+                        if (player2.health <= 0) {
+
+                            winner = 1;
+
+                        } else {
+                            disableControls = false;
+                            soundPlayer.StopSoundLoop();
+                            //soundPlayer.PlayDamage();
+
+                        }
+
+                    }
+
+                } else if (testAmmo.intersects(bg) || testAmmo.intersectsGround(bg)) {
+
+                    testAmmo = null;
+                    disableControls = false;
+                    soundPlayer.StopSoundLoop();
+
                 }
 
-            } else if ( testAmmo.intersects( bg ) || testAmmo.intersectsGround(bg) ){
-
-                testAmmo = null;
-                disableControls = false;
-                soundPlayer.StopSoundLoop();
 
             }
-
-
         }
 
     }
 
     @Override
     protected void render(Graphics g) {
-        bg.renderBG(g);
+        if(!isMenu) {
+            bg.renderBG(g);
 
-        renderPlayerStats(g);
+            renderPlayerStats(g);
 
-        if ( winner != 0 ) {
+            if (winner != 0) {
 
-            g.drawString( "Player " + winner + " has won this round!", appWidth/2, appHeight/2 );
+                g.drawString("Player " + winner + " has won this round!", appWidth / 2, appHeight / 2);
+                soundPlayer.StopSoundLoop();
+            }
+
+            player1.render(g);
+            player2.render(g);
+            if (testAmmo != null)
+                testAmmo.render(g);
 
         }
-
-        player1.render(g);
-        player2.render(g);
-        if (testAmmo != null)
-            testAmmo.render(g);
-
         super.render(g);
     }
 
