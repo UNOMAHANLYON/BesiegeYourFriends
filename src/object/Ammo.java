@@ -11,6 +11,7 @@ public class Ammo extends Sprite {
     private float vertical;
     private int type;
     private int direction;
+    public int damage;
 
     public Ammo( Vector2f location, float power, Float angle, int player ) {
 
@@ -19,6 +20,7 @@ public class Ammo extends Sprite {
     //    this.type = type;
         this.showBounds = true;
         this.gravityApplies = true;
+        this.tag = player;
 
         switch(player) {
 
@@ -30,6 +32,8 @@ public class Ammo extends Sprite {
                 break;
 
         }
+
+        damage = 100;
 
         if ( angle.compareTo(90.0f) > 0 ) {
 
@@ -78,6 +82,28 @@ public class Ammo extends Sprite {
 //        for (int i=0; i < this.innerBounds.size(); i++) {
 //            innerBounds.get(i).updateWorld(boundMatrix);
 //        }
+
+    }
+
+    public boolean checkCollisions ( Sprite test ){
+
+        for(int i=0; i < this.innerBounds.size(); i++) {
+            if (this.innerBounds.get(i).intersects( test.outterBounds )) {
+
+                for( int j =0; j < test.innerBounds.size(); j++ ){
+
+                    if ( this.innerBounds.get(i).intersects( test.innerBounds.get(j) ) ){
+
+                        return true;
+
+                    }
+
+                }
+
+            }
+        }
+
+        return false;
 
     }
 

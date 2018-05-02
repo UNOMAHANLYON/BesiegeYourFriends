@@ -14,9 +14,8 @@ public class PlayerSprite extends Sprite {
     private float moveDirection = 0f;
     public float power;
     public float angle;
-    private final float maxPower = 15;
+    private final float maxPower = 20;
     private final float maxAngle = 180;
-    private int player;
     private int shotDirection;
     private int selectedAmmo;
     private final int numAmmoTypes = 3;
@@ -28,7 +27,7 @@ public class PlayerSprite extends Sprite {
         this.showBounds = true;
         this.gravityApplies = true;
         this.bg = bg;
-        this.player = player;
+        this.tag = player;
         power = 15;
         angle = 45;
         selectedAmmo = 0;
@@ -37,21 +36,24 @@ public class PlayerSprite extends Sprite {
 
             case 1:
                 shotDirection = 1;
+                setSubImage(1, 1, 64, 64);
                 break;
             case 2:
                 shotDirection = -1;
+                setSubImage(1, 7, 64, 64);
                 break;
 
         }
 
-        setSubImage(1, 1, 64, 64);
-
+        scale = new Vector2f( shotDirection, 1 );
         outterBounds = new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f));
         innerBounds.add(new BoundingBox(new Vector2f(-0.375f, -0.375f), new Vector2f(0.375f, 0.375f)));
 
+        System.out.println("test");
     }
 
     public void updatePlayer(float deltaTime, Matrix3x3f viewport) {
+
         update(deltaTime, viewport);
 
         if(this.intersectsGround(bg)) {
@@ -70,13 +72,7 @@ public class PlayerSprite extends Sprite {
         }
     }
 
-    public boolean intersectsGround(Sprite bg) {
-        for(int i=0; i < this.innerBounds.size(); i++) {
-            if (this.innerBounds.get(i).intersects(this.bg.groundBound))
-                return true;
-        }
-        return false;
-    }
+
 
     @Override
     public void moveLeft ( float value ) {
@@ -92,27 +88,42 @@ public class PlayerSprite extends Sprite {
         moveDirection = -0.01f;
     }
 
-    public void addPower ( ){
+    public void addPower ( float delta ){
 
-            power ++;
-
-    }
-
-    public void raiseAngle ( ){
-
-            angle ++;
+        if ( power < maxPower ) {
+            power = power + 2 * delta;
+        } else {
+            power = 0;
+        }
 
     }
 
-    public void lowerAngle ( ){
+    public void raiseAngle ( float delta ){
 
-            angle --;
+        if ( angle < maxAngle ) {
+            angle = angle + 5* delta;
+        } else {
+            angle = 0;
+        }
 
     }
 
-    public void subPower ( ){
+    public void lowerAngle ( float delta ){
 
-            power --;
+        if (angle != 0) {
+            angle =  angle - 5*delta;
+        } else {
+            angle = maxAngle;
+        }
+
+    }
+
+    public void subPower ( float delta ){
+        if ( power != 0 ) {
+            power = power - 2*delta;
+        } else {
+            power = maxPower;
+        }
 
     }
 
@@ -141,6 +152,12 @@ public class PlayerSprite extends Sprite {
             selectedAmmo ++;
 
         }
+
+    }
+
+    public void dealDamage( int damage ) {
+
+        health -= damage;
 
     }
 
