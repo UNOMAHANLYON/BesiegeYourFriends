@@ -33,7 +33,7 @@ public class Ammo extends Sprite {
 
         }
 
-        damage = 100;
+        damage = 50;
 
         if ( angle.compareTo(90.0f) > 0 ) {
 
