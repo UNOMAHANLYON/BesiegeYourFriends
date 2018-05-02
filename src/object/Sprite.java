@@ -91,6 +91,10 @@ public class Sprite {
         spriteImage = spriteSheet.getSubimage((col * 64) - 64, (row * 64) - 64, width, height);
     }
 
+    public BufferedImage setArraySubImage(int col, int row, int width, int height) {
+        return spriteSheet.getSubimage((col * 64) - 64, (row * 64) - 64, width, height);
+    }
+
     public void render( Graphics G ) {
 
         if (spriteImage != null) {
@@ -117,7 +121,7 @@ public class Sprite {
 
     }
 
-    private AffineTransform createTransform() {
+    protected AffineTransform createTransform() {
         Vector2f screen = world.mul(translate);
         AffineTransform transform = AffineTransform.getTranslateInstance(screen.x, screen.y);
         transform.scale(scale.x, scale.y);
@@ -225,5 +229,7 @@ public class Sprite {
         translate.x += value;
 
     }
+
+
 
 }

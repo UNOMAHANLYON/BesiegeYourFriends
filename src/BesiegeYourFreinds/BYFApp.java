@@ -160,13 +160,13 @@ public class BYFApp extends SimpleFramework {
                 soundPlayer.StopSoundLoop();
                 soundPlayer.PlayCatapultLaunch();
                 if (turn == 1) {
-
-                    testAmmo = new Ammo(new Vector2f(player1.getLoc()), player1.power, player1.angle, 1);
+                    player1.shooting = true;
+                    testAmmo = new Ammo(new Vector2f(player1.getLoc()), player1.power, player1.angle, 1, player1.selectedAmmo);
                     turn = 2;
 
                 } else {
-
-                    testAmmo = new Ammo(new Vector2f(player2.getLoc()), player2.power, player2.angle, 2);
+                    player2.shooting = true;
+                    testAmmo = new Ammo(new Vector2f(player2.getLoc()), player2.power, player2.angle, 2, player2.selectedAmmo);
                     turn = 1;
 
                 }
@@ -205,7 +205,8 @@ public class BYFApp extends SimpleFramework {
 
                         player1.dealDamage(testAmmo.damage);
                         testAmmo = null;
-
+                        player1.shooting = false;
+                        player2.shooting = false;
                         if (player1.health <= 0) {
 
                             winner = 2;
@@ -225,6 +226,8 @@ public class BYFApp extends SimpleFramework {
 
                         player2.dealDamage(testAmmo.damage);
                         testAmmo = null;
+                        player1.shooting = false;
+                        player2.shooting = false;
                         if (player2.health <= 0) {
 
                             winner = 1;
@@ -241,6 +244,8 @@ public class BYFApp extends SimpleFramework {
                 } else if (testAmmo.intersects(bg) || testAmmo.intersectsGround(bg)) {
 
                     testAmmo = null;
+                    player1.shooting = false;
+                    player2.shooting = false;
                     disableControls = false;
                     soundPlayer.StopSoundLoop();
 
@@ -319,10 +324,12 @@ public class BYFApp extends SimpleFramework {
         Vector2f p1HealthDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 3.2f));
         Vector2f p1AngleDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 2.9f));
         Vector2f p1PowerDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 2.6f));
+        Vector2f p1AmmoDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 2.3f));
 
         Vector2f p2HealthDisplay = getViewportTransform().mul(new Vector2f(3.6f, 3.2f));
         Vector2f p2AngleDisplay = getViewportTransform().mul(new Vector2f(3.6f, 2.9f));
         Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(3.6f, 2.6f));
+        Vector2f p2AmmoDisplay = getViewportTransform().mul(new Vector2f(3.6f, 2.3f));
 
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
@@ -336,6 +343,14 @@ public class BYFApp extends SimpleFramework {
         g.drawString("Angle: " + (int) player1.angle, (int) p1AngleDisplay.x, (int) p1AngleDisplay.y);
         g.drawString("Power: " + (int) player1.power, (int) p1PowerDisplay.x, (int) p1PowerDisplay.y);
 
+        String ammoType = "";
+        if(player1.selectedAmmo == 0)
+            ammoType = "Ammo Type: Stone";
+        else
+            ammoType = "Ammo Type: Cow";
+
+        g.drawString(ammoType,  (int) p1AmmoDisplay.x, (int) p1AmmoDisplay.y);
+
         if(player2.health >= 0) {
             g.drawString("Player 2 Health: " + player2.health  +"%", (int) p2HealthDisplay.x, (int) p2HealthDisplay.y);
         }
@@ -345,6 +360,13 @@ public class BYFApp extends SimpleFramework {
 
         g.drawString("Angle: " + (int) player2.angle , (int) p2AngleDisplay.x, (int) p2AngleDisplay.y );
         g.drawString("Power: " + (int) player2.power , (int) p2PowerDisplay.x, (int) p2PowerDisplay.y );
+
+        if(player2.selectedAmmo == 0)
+            ammoType = "Ammo Type: Stone";
+        else
+            ammoType = "Ammo Type: Cow";
+
+        g.drawString(ammoType,  (int) p2AmmoDisplay.x, (int) p2AmmoDisplay.y);
 
     }
 
