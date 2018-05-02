@@ -117,6 +117,7 @@ public class BYFApp extends SimpleFramework {
             if (keyboard.keyDownOnce(KeyEvent.VK_SPACE)) {
 
                 disableControls = true;
+                soundPlayer.StopSoundLoop();
                 soundPlayer.PlayCatapultLaunch();
                 if (turn == 1) {
 
