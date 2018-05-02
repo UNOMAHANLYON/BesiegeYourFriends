@@ -298,7 +298,7 @@ public class BYFApp extends SimpleFramework {
         Vector2f p2AngleDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.5f));
         Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.2f));
 
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
 
         if(player1.health >= 0) {
             g.drawString("Player 1 Health: " + player1.health  +"%", (int) p1HealthDisplay.x, (int) p1HealthDisplay.y);
