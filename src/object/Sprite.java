@@ -189,6 +189,14 @@ public class Sprite {
         return false;
     }
 
+    public boolean intersectsGround(Background bg) {
+        for(int i=0; i < this.innerBounds.size(); i++) {
+            if (this.innerBounds.get(i).intersects(bg.groundBound))
+                return true;
+        }
+        return false;
+    }
+
     public void setLocation(Vector2f location) {
         translate = location;
     }

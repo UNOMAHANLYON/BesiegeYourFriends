@@ -117,31 +117,24 @@ public class BoundingBox implements BoundingShapes {
     }
 
     public void render( Graphics G, Color color, Matrix3x3f viewport ) {
-        //world = world.mul(viewport);
-
         Vector2f tl = viewport.mul(new Vector2f(minW.x, maxW.y));
         Vector2f br = viewport.mul(new Vector2f(maxW.x, minW.y));
-
-//        Vector2f tl = new Vector2f(minW.x, maxW.y);
-//        Vector2f br = new Vector2f(maxW.x, minW.y);
-
-
 
         int width = (int) (br.x - tl.x);
         int height = (int) (br.y - tl.y);
 
-//        System.out.println("TopLeft: X" + tl.x + " Y" + tl.y + " Width: " + width + " Height: " + height);
-
         G.setColor(color);
         G.drawRect((int)tl.x, (int)tl.y, width, height);
-
     }
 
     public void updateWorld(Matrix3x3f world) {
         this.world = world;
-        
-        minW = world.mul(min);
-        maxW = world.mul(max);
+
+        Vector2f tl = world.mul(new Vector2f(min.x, max.y));
+        Vector2f br = world.mul(new Vector2f(max.x, min.y));
+
+        minW = new Vector2f(Math.min(tl.x, br.x), Math.min(tl.y, br.y));
+        maxW = new Vector2f(Math.max(tl.x, br.x), Math.max(tl.y, br.y));
     }
 
 }
