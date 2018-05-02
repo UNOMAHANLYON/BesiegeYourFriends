@@ -64,8 +64,8 @@ public class BYFApp extends SimpleFramework {
                 currentPlayer = player1;
                 winner = 0;
 
-                player1.setLocation(new Vector2f(-7f, -3.125f));
-                player2.setLocation(new Vector2f ( 7f, -3.125f ));
+                player1.setLocation(new Vector2f(-7f, -3.425f));
+                player2.setLocation(new Vector2f ( 7f, -3.425f ));
                 isMenu = false;
                 disableControls = false;
             }
@@ -79,8 +79,8 @@ public class BYFApp extends SimpleFramework {
                 currentPlayer = player1;
                 winner = 0;
 
-                player1.setLocation(new Vector2f(-7f, -3.125f));
-                player2.setLocation(new Vector2f ( 7f, -3.125f ));
+                player1.setLocation(new Vector2f(-7f, -3.425f));
+                player2.setLocation(new Vector2f ( 7f, -3.425f ));
                 isMenu = false;
                 disableControls = false;
             }

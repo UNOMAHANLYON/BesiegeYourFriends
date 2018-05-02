@@ -22,7 +22,6 @@ public class MenuManager {
         titleScreen.update(deltaTime, viewport);
         player1Wins.update(deltaTime, viewport);
         player2Wins.update(deltaTime, viewport);
-
     }
 
     public void render(Graphics g) {
