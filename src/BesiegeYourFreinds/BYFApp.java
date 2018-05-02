@@ -163,13 +163,22 @@ public class BYFApp extends SimpleFramework {
                     player1.shooting = true;
                     testAmmo = new Ammo(new Vector2f(player1.getLoc()), player1.power, player1.angle, 1, player1.selectedAmmo);
                     turn = 2;
+                    if(player1.selectedAmmo == 1){
+                        soundPlayer.StopSoundLoop();
+                        soundPlayer.PlayCowMoo();
+                    }
 
                 } else {
                     player2.shooting = true;
                     testAmmo = new Ammo(new Vector2f(player2.getLoc()), player2.power, player2.angle, 2, player2.selectedAmmo);
                     turn = 1;
+                    if(player2.selectedAmmo == 1){
+                        soundPlayer.StopSoundLoop();
+                        soundPlayer.PlayCowMoo();
+                    }
 
                 }
+
 
             }
 

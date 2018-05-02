@@ -17,6 +17,8 @@ public class SoundPlayer {
 
     private byte[]  catapultLaunchBytes;
 
+    private byte[] cowBytes;
+
     private byte[] damageBytes;
 
     public SoundPlayer(){
@@ -34,6 +36,10 @@ public class SoundPlayer {
         in = ResourceLoader.load(SoundPlayer.class,
                 "./res/assets/sounds/destroyed.wav", "cl");
         damageBytes = readBytes(in);
+
+        in = ResourceLoader.load(SoundPlayer.class,
+                "./res/assets/sounds/cow_moo.wav", "cl");
+        cowBytes = readBytes(in);
 
         in = ResourceLoader.load(SoundPlayer.class,
                 "./res/assets/sounds/bg.wav", "bg");
@@ -60,6 +66,11 @@ public class SoundPlayer {
     public void PlayDamage(){
         isDamageSound = true;
         this.loadFile(damageBytes);
+        this.PlaySoundLoop();
+    }
+
+    public void PlayCowMoo(){
+        this.loadFile(cowBytes);
         this.PlaySoundLoop();
     }
 
