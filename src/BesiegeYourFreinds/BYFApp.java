@@ -18,6 +18,8 @@ public class BYFApp extends SimpleFramework {
     public PlayerSprite currentPlayer;
     public Ammo testAmmo;
     public int turn;
+    public int winner;
+
     private boolean disableControls;
 
     public BYFApp() {
@@ -40,6 +42,7 @@ public class BYFApp extends SimpleFramework {
         turn = 1;
         currentPlayer = player1;
         disableControls = false;
+        winner = 0;
 
         //testAmmo = new Ammo(new Vector2f(-7f, -3.125f), 15f, 45f, 1);
 
@@ -145,7 +148,16 @@ public class BYFApp extends SimpleFramework {
 
                     player1.dealDamage( testAmmo.damage );
                     testAmmo = null;
-                    disableControls = false;
+
+                    if ( player1.health <= 0 ) {
+
+                        winner = 2;
+
+                    } else {
+
+                        disableControls = false;
+
+                    }
 
                 }
 
@@ -155,7 +167,15 @@ public class BYFApp extends SimpleFramework {
 
                     player2.dealDamage( testAmmo.damage );
                     testAmmo = null;
-                    disableControls = false;
+                    if ( player2.health <= 0 ) {
+
+                        winner = 1;
+
+                    } else {
+
+                        disableControls = false;
+
+                    }
 
                 }
 
@@ -177,6 +197,12 @@ public class BYFApp extends SimpleFramework {
 
         renderPlayerStats(g);
 
+        if ( winner != 0 ) {
+
+            g.drawString( "Player " + winner + " has won this round!", appWidth/2, appHeight/2 );
+
+        }
+
         player1.render(g);
         player2.render(g);
         if (testAmmo != null)
@@ -184,7 +210,7 @@ public class BYFApp extends SimpleFramework {
 
         super.render(g);
     }
-    
+
     public void renderPlayerStats(Graphics g) {
         // Use world coordinates for Player 1 HealthBar
         Vector2f p1HealthbarTL = getViewportTransform().mul(new Vector2f(-7.75f, 4.25f));
