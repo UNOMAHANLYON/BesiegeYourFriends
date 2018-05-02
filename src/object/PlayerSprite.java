@@ -112,7 +112,7 @@ public class PlayerSprite extends Sprite {
 
     public void lowerAngle ( float delta ){
 
-        if (angle <= 0) {
+        if (angle > 0) {
             angle =  angle - 5*delta;
         } else {
             angle = maxAngle;
@@ -121,7 +121,7 @@ public class PlayerSprite extends Sprite {
     }
 
     public void subPower ( float delta ){
-        if ( power <= 0 ) {
+        if ( power > 0 ) {
             power = power - 2*delta;
         } else {
             power = maxPower;
