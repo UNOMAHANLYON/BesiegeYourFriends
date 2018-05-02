@@ -12,8 +12,9 @@ public class Ammo extends Sprite {
     private int type;
     private int direction;
     public int damage;
+    public int row;
 
-    public Ammo( Vector2f location, float power, Float angle, int player ) {
+    public Ammo( Vector2f location, float power, Float angle, int player, int type ) {
 
         super( "ammospritesheet.png", new Vector2f(-0.175f, 0.175f), new Vector2f(0.175f, -0.175f));
 
@@ -21,6 +22,19 @@ public class Ammo extends Sprite {
         this.showBounds = false;
         this.gravityApplies = true;
         this.tag = player;
+        this.type = type;
+
+        switch(type){
+            case 0:
+                row = 1;
+                damage = 50;
+                break;
+
+            case 1:
+                row = 4;
+                damage = 25;
+                break;
+        }
 
         switch(player) {
 
@@ -32,8 +46,6 @@ public class Ammo extends Sprite {
                 break;
 
         }
-
-        damage = 50;
 
         //set angle and direction for shots with greater than 90 degrees
         if ( angle.compareTo(90.0f) > 0 ) {
@@ -59,7 +71,7 @@ public class Ammo extends Sprite {
         outterBounds = new BoundingCircle( new Vector2f(0,  0), 0.35f );
         innerBounds.add( new BoundingCircle( new Vector2f(0,  0), 0.15f ) );
 
-        setSubImage(1, 1, 64, 64);
+        setSubImage(1, row, 64, 64);
 
         setLocation(location);
     }
@@ -73,7 +85,7 @@ public class Ammo extends Sprite {
         super.translate.y += vertical * deltaTime;
         super.translate.x += horizontal * direction * deltaTime;
         //vertical -= (gravity * deltaTime);
-
+        rotateRadian += 5f * deltaTime;
         super.update(deltaTime, viewport);
 
 //        world =  viewport;
