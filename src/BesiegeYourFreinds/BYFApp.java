@@ -3,6 +3,7 @@ package BesiegeYourFreinds;
 import object.Ammo;
 import object.Background;
 import object.PlayerSprite;
+import object.PlayerStats;
 import util.SimpleFramework;
 import util.SoundPlayer;
 import util.Vector2f;
@@ -15,6 +16,7 @@ public class BYFApp extends SimpleFramework {
     public boolean isMenu;
     public boolean show;
     public Background bg;
+    public PlayerStats playerStats;
     public PlayerSprite player1;
     public PlayerSprite player2;
     public PlayerSprite currentPlayer;
@@ -40,6 +42,7 @@ public class BYFApp extends SimpleFramework {
         super.initialize();
         isMenu = true;
         soundPlayer = new SoundPlayer();
+        playerStats = new PlayerStats("PlayerStats.png");
 
 
         soundPlayer.PlayBG();
@@ -65,6 +68,7 @@ public class BYFApp extends SimpleFramework {
                 player1.setLocation(new Vector2f(-7f, -3.125f));
                 player2.setLocation(new Vector2f ( 7f, -3.125f ));
                 isMenu = false;
+                disableControls = false;
             }
 
             if (keyboard.keyDown(KeyEvent.VK_A)) {
@@ -79,6 +83,7 @@ public class BYFApp extends SimpleFramework {
                 player1.setLocation(new Vector2f(-7f, -3.125f));
                 player2.setLocation(new Vector2f ( 7f, -3.125f ));
                 isMenu = false;
+                disableControls = false;
             }
         }
 
@@ -180,6 +185,7 @@ public class BYFApp extends SimpleFramework {
     protected void updateObjects(float delta) {
         if(!isMenu) {
             bg.updateBG(delta, getViewportTransform());
+            playerStats.update(delta, getViewportTransform());
             player1.updatePlayer(delta, getViewportTransform());
             player2.updatePlayer(delta, getViewportTransform());
             if (testAmmo != null) {
@@ -243,6 +249,8 @@ public class BYFApp extends SimpleFramework {
         if(!isMenu) {
             bg.renderBG(g);
 
+            playerStats.render(g);
+
             renderPlayerStats(g);
 
             player1.render(g);
@@ -263,20 +271,20 @@ public class BYFApp extends SimpleFramework {
             soundPlayer.StopSoundLoop();
             isMenu = true;
         }
-        super.render(g);
+        //super.render(g);
     }
 
     public void renderPlayerStats(Graphics g) {
         // Use world coordinates for Player 1 HealthBar
-        Vector2f p1HealthbarTL = getViewportTransform().mul(new Vector2f(-7.75f, 4.25f));
-        Vector2f p1HealthbarBR = getViewportTransform().mul(new Vector2f(-4f, 4f));
+        Vector2f p1HealthbarTL = getViewportTransform().mul(new Vector2f(-7.4f, 3.7f));
+        Vector2f p1HealthbarBR = getViewportTransform().mul(new Vector2f(-3.5f, 3.45f));
         int p1HealthW = (int) ((p1HealthbarBR.x - p1HealthbarTL.x) * player1.health * 0.01f);
         int p1HealthbarW = (int) (p1HealthbarBR.x - p1HealthbarTL.x);
         int p1HealthbarH = (int) (p1HealthbarBR.y - p1HealthbarTL.y);
 
         // Use world coordinates for Player 2 HealthBar
-        Vector2f p2HealthbarTL = getViewportTransform().mul(new Vector2f(4f, 4.25f));
-        Vector2f p2HealthbarBR = getViewportTransform().mul(new Vector2f(7.75f, 4f));
+        Vector2f p2HealthbarTL = getViewportTransform().mul(new Vector2f(3.5f, 3.7f));
+        Vector2f p2HealthbarBR = getViewportTransform().mul(new Vector2f(7.4f, 3.45f));
         int p2HealthW = (int) ((p2HealthbarBR.x - p2HealthbarTL.x) * player2.health * 0.01f);
         int p2HealthbarW = (int) (p2HealthbarBR.x - p2HealthbarTL.x);
         int p2HealthbarH = (int) (p2HealthbarBR.y - p2HealthbarTL.y);
@@ -290,13 +298,13 @@ public class BYFApp extends SimpleFramework {
         g.drawRect((int) p2HealthbarTL.x, (int) p2HealthbarTL.y, p2HealthbarW, p2HealthbarH);
 
         // Player Text Info
-        Vector2f p1HealthDisplay = getViewportTransform().mul(new Vector2f(-7.65f, 3.8f));
-        Vector2f p1AngleDisplay = getViewportTransform().mul(new Vector2f(-7.65f, 3.5f));
-        Vector2f p1PowerDisplay = getViewportTransform().mul(new Vector2f(-7.65f, 3.2f));
+        Vector2f p1HealthDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 3.2f));
+        Vector2f p1AngleDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 2.9f));
+        Vector2f p1PowerDisplay = getViewportTransform().mul(new Vector2f(-7.3f, 2.6f));
 
-        Vector2f p2HealthDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.8f));
-        Vector2f p2AngleDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.5f));
-        Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.2f));
+        Vector2f p2HealthDisplay = getViewportTransform().mul(new Vector2f(3.6f, 3.2f));
+        Vector2f p2AngleDisplay = getViewportTransform().mul(new Vector2f(3.6f, 2.9f));
+        Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(3.6f, 2.6f));
 
         g.setColor(Color.BLACK);
 
