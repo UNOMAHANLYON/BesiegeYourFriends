@@ -173,45 +173,9 @@ public class BYFApp extends SimpleFramework {
 
     @Override
     protected void render(Graphics g) {
-
         bg.renderBG(g);
-        g.setColor(Color.GREEN);
-        g.fillRect(5, 5, player1.health * 2, 25);
 
-        g.setColor(Color.WHITE);
-        g.drawRect(5, 5, 200, 25);
-
-        if(player1.health >= 0) {
-            g.setColor(Color.BLACK);
-            g.drawString("Player 1 Health: " + player1.health  +"%", 5, 45);
-        }
-        else {
-            g.setColor(Color.BLACK);
-            g.drawString("Player 1 Health: " + 0 +"%", 5, 45);
-        }
-
-        g.setColor(Color.BLACK);
-        g.drawString("Angle: " + (int) player1.angle, 5, 60 );
-        g.drawString("Power: " + player1.power, 5, 75 );
-
-        g.setColor(Color.GREEN);
-        g.fillRect(945, 5, player2.health * 2, 25);
-
-        g.setColor(Color.WHITE);
-        g.drawRect(945, 5, 200, 25);
-
-        if(player2.health >= 0) {
-            g.setColor(Color.BLACK);
-            g.drawString("Player 2 Health: " + player2.health  +"%", 945, 45);
-        }
-        else {
-            g.setColor(Color.BLACK);
-            g.drawString("Player 2 Health: " + 0 +"%", 945, 45);
-        }
-
-        g.setColor(Color.BLACK);
-        g.drawString("Angle: " + (int) player2.angle , 945, 60 );
-        g.drawString("Power: " + (int) player2.power , 945, 75 );
+        renderPlayerStats(g);
 
         player1.render(g);
         player2.render(g);
@@ -219,6 +183,62 @@ public class BYFApp extends SimpleFramework {
             testAmmo.render(g);
 
         super.render(g);
+    }
+    
+    public void renderPlayerStats(Graphics g) {
+        // Use world coordinates for Player 1 HealthBar
+        Vector2f p1HealthbarTL = getViewportTransform().mul(new Vector2f(-7.75f, 4.25f));
+        Vector2f p1HealthbarBR = getViewportTransform().mul(new Vector2f(-4f, 4f));
+        int p1HealthW = (int) ((p1HealthbarBR.x - p1HealthbarTL.x) * player1.health * 0.01f);
+        int p1HealthbarW = (int) (p1HealthbarBR.x - p1HealthbarTL.x);
+        int p1HealthbarH = (int) (p1HealthbarBR.y - p1HealthbarTL.y);
+
+        // Use world coordinates for Player 2 HealthBar
+        Vector2f p2HealthbarTL = getViewportTransform().mul(new Vector2f(4f, 4.25f));
+        Vector2f p2HealthbarBR = getViewportTransform().mul(new Vector2f(7.75f, 4f));
+        int p2HealthW = (int) ((p2HealthbarBR.x - p2HealthbarTL.x) * player2.health * 0.01f);
+        int p2HealthbarW = (int) (p2HealthbarBR.x - p2HealthbarTL.x);
+        int p2HealthbarH = (int) (p2HealthbarBR.y - p2HealthbarTL.y);
+
+        g.setColor(Color.GREEN);
+        g.fillRect((int) p1HealthbarTL.x, (int) p1HealthbarTL.y, p1HealthW, p1HealthbarH);
+        g.fillRect((int) p2HealthbarTL.x, (int) p2HealthbarTL.y, p2HealthW, p2HealthbarH);
+
+        g.setColor(Color.WHITE);
+        g.drawRect((int) p1HealthbarTL.x, (int) p1HealthbarTL.y, p1HealthbarW, p1HealthbarH);
+        g.drawRect((int) p2HealthbarTL.x, (int) p2HealthbarTL.y, p2HealthbarW, p2HealthbarH);
+
+        // Player Text Info
+        Vector2f p1HealthDisplay = getViewportTransform().mul(new Vector2f(-7.65f, 3.8f));
+        Vector2f p1AngleDisplay = getViewportTransform().mul(new Vector2f(-7.65f, 3.5f));
+        Vector2f p1PowerDisplay = getViewportTransform().mul(new Vector2f(-7.65f, 3.2f));
+
+        Vector2f p2HealthDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.8f));
+        Vector2f p2AngleDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.5f));
+        Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(4.1f, 3.2f));
+
+        g.setColor(Color.BLACK);
+
+        if(player1.health >= 0) {
+            g.drawString("Player 1 Health: " + player1.health  +"%", (int) p1HealthDisplay.x, (int) p1HealthDisplay.y);
+        }
+        else {
+            g.drawString("Player 1 Health: " + 0 +"%", (int) p1HealthDisplay.x, (int) p1HealthDisplay.y);
+        }
+
+        g.drawString("Angle: " + (int) player1.angle, (int) p1AngleDisplay.x, (int) p1AngleDisplay.y);
+        g.drawString("Power: " + player1.power, (int) p1PowerDisplay.x, (int) p1PowerDisplay.y);
+
+        if(player2.health >= 0) {
+            g.drawString("Player 2 Health: " + player2.health  +"%", (int) p2HealthDisplay.x, (int) p2HealthDisplay.y);
+        }
+        else {
+            g.drawString("Player 2 Health: " + 0 +"%", (int) p2HealthDisplay.x, (int) p2HealthDisplay.y);
+        }
+
+        g.drawString("Angle: " + (int) player2.angle , (int) p2AngleDisplay.x, (int) p2AngleDisplay.y );
+        g.drawString("Power: " + (int) player2.power , (int) p2PowerDisplay.x, (int) p2PowerDisplay.y );
+
     }
 
 }
