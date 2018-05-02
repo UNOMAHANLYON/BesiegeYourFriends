@@ -325,7 +325,7 @@ public class BYFApp extends SimpleFramework {
         Vector2f p2PowerDisplay = getViewportTransform().mul(new Vector2f(3.6f, 2.6f));
 
         g.setColor(Color.BLACK);
-
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
         if(player1.health >= 0) {
             g.drawString("Player 1 Health: " + player1.health  +"%", (int) p1HealthDisplay.x, (int) p1HealthDisplay.y);
         }
