@@ -16,7 +16,7 @@ public class Ammo extends Sprite {
 
     public Ammo( Vector2f location, float power, Float angle, int player, int type ) {
 
-        super( "ammospritesheet.png", new Vector2f(-0.175f, 0.175f), new Vector2f(0.175f, -0.175f));
+        super( "/images/ammospritesheet.png", new Vector2f(-0.175f, 0.175f), new Vector2f(0.175f, -0.175f));
 
     //    this.type = type;
         this.showBounds = false;

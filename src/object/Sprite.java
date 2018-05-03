@@ -2,6 +2,7 @@ package object;
 
 import bounding.BoundingShapes;
 import util.Matrix3x3f;
+import util.ResourceLoader;
 import util.Vector2f;
 import util.Utility;
 
@@ -44,9 +45,10 @@ public class Sprite {
         this.innerBounds = new ArrayList<BoundingShapes>();
         health = 100;
         try {
-
+            //spriteSheet = ImageIO.read(ResourceLoader.load(Sprite.class, path, "images"));
+            spriteSheet = ImageIO.read(Sprite.class.getResource(path));
             //spriteImage = ImageIO.read(getClass().getResource(path));
-            spriteSheet = ImageIO.read(new File(path));
+            //spriteSheet = ImageIO.read(new File(path));
 
         } catch ( Exception e ) {
 

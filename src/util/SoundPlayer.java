@@ -25,24 +25,19 @@ public class SoundPlayer {
         isSoundPlaying = false;
         isDamageSound = false;
 
-        InputStream in = ResourceLoader.load(SoundPlayer.class,
-                "./res/assets/sounds/cart_rolling.wav", "cr");
+        InputStream in = SoundPlayer.class.getResourceAsStream("/assets/sounds/cart_rolling.wav");
         rollingCartBytes = readBytes(in);
 
-        in = ResourceLoader.load(SoundPlayer.class,
-                "./res/assets/sounds/catapult_launch.wav", "cl");
+        in = SoundPlayer.class.getResourceAsStream("/assets/sounds/catapult_launch.wav");
         catapultLaunchBytes = readBytes(in);
 
-        in = ResourceLoader.load(SoundPlayer.class,
-                "./res/assets/sounds/destroyed.wav", "cl");
+        in = SoundPlayer.class.getResourceAsStream("/assets/sounds/destroyed.wav");
         damageBytes = readBytes(in);
 
-        in = ResourceLoader.load(SoundPlayer.class,
-                "./res/assets/sounds/cow_moo.wav", "cl");
+        in = SoundPlayer.class.getResourceAsStream("/assets/sounds/cow_moo.wav");
         cowBytes = readBytes(in);
 
-        in = ResourceLoader.load(SoundPlayer.class,
-                "./res/assets/sounds/bg.wav", "bg");
+        in = SoundPlayer.class.getResourceAsStream("/assets/sounds/bg.wav");
         backgroundBytes = readBytes(in);
         loadFile(backgroundBytes);
 

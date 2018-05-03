@@ -31,7 +31,7 @@ public class PlayerSprite extends Sprite {
 
     public PlayerSprite(Background bg, int player ) {
 
-        super("catapultspritesheet.png", new Vector2f(-0.375f, 0.375f), new Vector2f(0.375f, -0.375f));
+        super("/images/catapultspritesheet.png", new Vector2f(-0.375f, 0.375f), new Vector2f(0.375f, -0.375f));
 
         this.showBounds = false;
         this.gravityApplies = true;

@@ -40,7 +40,7 @@ public class BYFApp extends SimpleFramework {
         super.initialize();
         isMenu = true;
         soundPlayer = new SoundPlayer();
-        playerStats = new PlayerStats("PlayerStats.png");
+        playerStats = new PlayerStats("/images/PlayerStats.png");
         menuManager = new MenuManager();
 
 
@@ -56,7 +56,7 @@ public class BYFApp extends SimpleFramework {
         if(isMenu){
             String path;
             if (keyboard.keyDown(KeyEvent.VK_D)) {
-                path = "west_bg.jpg";
+                path = "/images/west_bg.jpg";
                 bg = new Background(path);
                 player1 = new PlayerSprite(bg, 1);
                 player2 = new PlayerSprite(bg, 2);
@@ -71,7 +71,7 @@ public class BYFApp extends SimpleFramework {
             }
 
             if (keyboard.keyDown(KeyEvent.VK_A)) {
-                path = "snow_bg.jpg";
+                path = "/images/snow_bg.jpg";
                 bg = new Background(path);
                 player1 = new PlayerSprite(bg, 1);
                 player2 = new PlayerSprite(bg, 2);

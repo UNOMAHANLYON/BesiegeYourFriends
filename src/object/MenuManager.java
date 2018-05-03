@@ -11,9 +11,9 @@ public class MenuManager {
     public int winner;
 
     public MenuManager() {
-        titleScreen = new Menu("TitleScreen.png");
-        player1Wins = new Menu("Player1Wins.png");
-        player2Wins = new Menu("Player2Wins.png");
+        titleScreen = new Menu("/images/TitleScreen.png");
+        player1Wins = new Menu("/images/Player1Wins.png");
+        player2Wins = new Menu("/images/Player2Wins.png");
 
         winner = 0;
     }
